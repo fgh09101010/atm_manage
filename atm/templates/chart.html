@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        var labels = {{ labels|safe }};
+        var values = {{ values|safe }};
+        var backgroundColors = {{ background_colors|safe }};
+        var borderColors = {{ border_colors|safe }};
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'ATM數量',
+                    data: values,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

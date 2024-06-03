@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if atm_list %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>銀行</th>
+      <th>地區</th>
+      <th>地址</th>
+      <th>營業時間</th>
+      <th>電話</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  {% for obj in atm_list %}
+  <tr>
+    
+  <td><a href="{% url 'atm_detail' pk=obj.pk %}">{{ obj.atm_name }}</a></td>
+  <td>{{ obj.city_town }}</td>  
+  <td>{{ obj.address }}</td>
+  <td>{{ obj.service_type }}</td>
+  <td>{{ obj.phone }}</td>
+
+  </tr>
+  {%endfor%}
+  
+</tbody>
+</table>
+{% else %}
+    <p>There are no atm</p>
+  {% endif %}
+{% endblock %}
+
