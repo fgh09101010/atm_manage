@@ -88,3 +88,31 @@ class AtmDetailView(generic.DetailView):
 
     def get_queryset(self):
         return super().get_queryset().select_related('address', 'city_town')
+    
+
+
+
+class AddressDetailView(generic.DetailView):
+    model = AtmMain
+    template_name = 'address_detail.html'
+    context_object_name = 'atm'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_address = self.get_object().address
+        atm_count = AtmMain.objects.filter(address=current_address).count()
+        context['atm_count'] = atm_count
+        return context
+
+
+class CityDetailView(generic.DetailView):
+    model = AtmMain
+    template_name = 'city_detail.html'
+    context_object_name = 'atm'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_address = self.get_object().city_town
+        atm_count = AtmMain.objects.filter(city_town=current_address).count()
+        context['atm_count'] = atm_count
+        return context

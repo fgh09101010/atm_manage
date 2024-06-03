@@ -10,5 +10,7 @@ urlpatterns = [
     path('chart/', views.chart, name='chart'),
     path('atmlist/', views.AtmListView.as_view(), name='atms'),
     path("atmdetail/<pk>/", views.AtmDetailView.as_view(), name="atm_detail"),
+    path("address/<pk>/", views.AddressDetailView.as_view(), name="address_detail"),
+    path("city/<pk>/", views.CityDetailView.as_view(), name="city_detail"),
 
 ]

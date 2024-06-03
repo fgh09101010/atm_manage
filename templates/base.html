@@ -28,7 +28,6 @@
               <li><a href="{% url 'map' %}">ATM地圖</a></li>
               <li><a href="{% url 'chart' %}">圖表</a></li>
               <li><a href="{% url 'atms' %}">ATM列表</a></li>
-              
             </ul>
             {% endblock %}
           </div>
@@ -40,13 +39,15 @@
                       <div class="pagination">
                         <span class="page-links">
                           {% if page_obj.has_previous %}
-                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                            <a href="{{ request.path }}?page=1">第一頁</a>
+                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一頁</a>
                           {% endif %}
                           <span class="page-current">
                             <a>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
                           </span>
                           {% if page_obj.has_next %}
-                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一頁</a>
+                            <a href="{{ request.path }}?page={{ paginator.num_pages }}">最後一頁</a>
                           {% endif %}
                         </span>
                       </div>

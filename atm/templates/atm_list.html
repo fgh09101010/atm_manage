@@ -5,6 +5,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>銀行</th>
       <th>地區</th>
       <th>地址</th>
@@ -16,10 +17,10 @@
   
   {% for obj in atm_list %}
   <tr>
-    
-  <td><a href="{% url 'atm_detail' pk=obj.pk %}">{{ obj.atm_name }}</a></td>
-  <td>{{ obj.city_town }}</td>  
-  <td>{{ obj.address }}</td>
+  <td><a href="{% url 'atm_detail' pk=obj.pk %}">{{ obj.id }}</a></td>  
+  <td>{{ obj.atm_name }}</td>
+  <td><a href="{% url 'city_detail' pk=obj.pk %}">{{ obj.city_town }}</a></td>  
+  <td><a href="{% url 'address_detail' pk=obj.pk %}">{{ obj.address }}</a></td>
   <td>{{ obj.service_type }}</td>
   <td>{{ obj.phone }}</td>
 

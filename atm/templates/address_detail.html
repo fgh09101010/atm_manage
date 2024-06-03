@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>地址詳細</h4>
+<p><strong>地址:</strong>  {{ atm.address.address }}</p>
+<p><strong>ATM數量:</strong> {{atm_count}}</p>
+<p><strong>所屬縣市:</strong> {{ atm.city_town.city }}{{ atm.city_town.town }}</p>
+<p><strong>英文地址:</strong> {{ atm.address.english_address }}</p>
+<p><strong>緯度:</strong> {{ atm.address.latitude }}</p>
+<p><strong>經度:</strong> {{ atm.address.longitude }}</p>
+
+{% endblock %}
