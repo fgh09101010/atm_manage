@@ -13,5 +13,6 @@ urlpatterns = [
     path("atmdetail/<pk>/", views.AtmDetailView.as_view(), name="atm_detail"),
     path("address/<pk>/", views.AddressDetailView.as_view(), name="address_detail"),
     path("city/<pk>/", views.CityDetailView.as_view(), name="city_detail"),
+    path("restart_map/", views.restart_map, name="restart"),
 
 ]
