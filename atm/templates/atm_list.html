@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<form method="GET" action="{% url 'atms' %}">
+  <input type="text" name="q" placeholder="搜索...">
+  <button type="submit">搜索</button>
+  <p>可以透過銀行、縣市、鄉鎮、地址查詢</p>
+</form>
+
 {% if atm_list %}
 <table class="table table-striped">
   <thead>

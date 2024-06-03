@@ -7,6 +7,7 @@ from folium.plugins import MarkerCluster
 from django.core.cache import cache
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.db.models import Q
 # Create your views here.
 def index(request):
     atm_address=AtmAddress.objects.all()
@@ -51,26 +52,24 @@ def map(request):
     return render(request, 'map.html', context)
 
 def chart(request):
-    chart_data = cache.get('chart_data')
-    if not chart_data:
-        city_atm_counts = AtmMain.objects.values('city_town__city').annotate(total=Count('city_town')).order_by('city_town__city')
+    city_atm_counts = AtmMain.objects.values('city_town__city').annotate(total=Count('city_town')).order_by('-total', 'city_town__city')
 
-        # 分離標籤和數據
-        labels = [item['city_town__city'] for item in city_atm_counts]
-        values = [item['total'] for item in city_atm_counts]
+    # 分離標籤和數據
+    labels = [item['city_town__city'] for item in city_atm_counts]
+    values = [item['total'] for item in city_atm_counts]
 
-        colors = [f'rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}' for _ in city_atm_counts]
-        background_colors = [ _+", 0.2)" for _ in colors]
-        border_colors = [ _+", 1.0)" for _ in colors]
+    colors = [f'rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}' for _ in city_atm_counts]
+    background_colors = [ _+", 0.2)" for _ in colors]
+    border_colors = [ _+", 1.0)" for _ in colors]
 
-        # 將圖表數據儲存到緩存中，有效期可以自行設置
-        chart_data = {
-            'labels': labels,
-            'values': values,
-            'background_colors': background_colors,
-            'border_colors': border_colors,
-        }
-        cache.set('chart_data', chart_data, timeout=3600)  # 這裡的 timeout 可以根據需要自行設置
+    # 將圖表數據儲存到緩存中，有效期可以自行設置
+    chart_data = {
+        'labels': labels,
+        'values': values,
+        'background_colors': background_colors,
+        'border_colors': border_colors,
+    }
+
 
     return render(request, 'chart.html', chart_data)
 
@@ -78,8 +77,19 @@ class AtmListView(generic.ListView):
     model = AtmMain
     context_object_name = 'atm_list'
     paginate_by = 10
-    #queryset = Book.objects.filter(title__icontains='war')[:5]
     template_name = 'atm_list.html'
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return AtmMain.objects.filter(
+                Q(atm_name__icontains=query) |
+                Q(city_town__city__icontains=query) |
+                Q(city_town__town__icontains=query) |
+                Q(address__address__icontains=query)
+            ).order_by('id')
+        else:
+            return AtmMain.objects.all().order_by('id')
+
 
 class AtmDetailView(generic.DetailView):
     model = AtmMain
@@ -116,3 +126,4 @@ class CityDetailView(generic.DetailView):
         atm_count = AtmMain.objects.filter(city_town=current_address).count()
         context['atm_count'] = atm_count
         return context
+    
