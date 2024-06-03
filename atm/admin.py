@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AtmAddress,AtmMain,City
+from .models import AtmAddress,AtmMain,City,Customer,Transaction
 
 @admin.register(AtmAddress)
 class AtmAddressAdmin(admin.ModelAdmin):
@@ -13,3 +13,10 @@ class AtmMainAdmin(admin.ModelAdmin):
 class CityAdmin(admin.ModelAdmin):
     list_display =("city_town_id", "city", "town", "population", "area", "density")
 
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display =("name", "account_number", "password", "balance")
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display =("Customer", "time", "amount")

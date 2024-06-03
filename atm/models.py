@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class AtmAddress(models.Model):
     address_id = models.AutoField(primary_key=True)
@@ -49,8 +49,31 @@ class City(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'City'
-        verbose_name_plural = "City"
+        db_table = 'atm_city'
+        verbose_name_plural = "atm_city"
 
     def __str__(self):
         return f"{self.city}{self.town}"
+    
+class Customer(models.Model):
+    name=models.CharField(max_length=1000, db_collation='utf8mb4_general_ci', blank=True, null=True)
+    account_number=models.CharField(max_length=1000, db_collation='utf8mb4_general_ci', blank=True, null=True)
+    password=models.CharField(max_length=1000, db_collation='utf8mb4_general_ci', blank=True, null=True)
+    balance=models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
+
+    class Meta:
+        db_table = 'Customer'
+        verbose_name_plural = "Customer"
+
+    def __str__(self):
+        return f"{self.name}"
+    
+class Transaction(models.Model):
+    Customer = models.ForeignKey(Customer, models.DO_NOTHING, blank=True, null=True)
+    time = models.DateTimeField(auto_now=True)
+    amount=models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
+    #轉入銀行
+    #轉入帳號
+    class Meta:
+        db_table = 'Transaction'
+        verbose_name_plural = "Transaction"
