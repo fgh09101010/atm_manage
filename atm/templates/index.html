@@ -1,2 +1,16 @@
 {% extends "base.html" %}
-{% block content %}<a>hello world</a>{% endblock %}
+{% block content %}
+<style>
+    img{
+        height: 500px; 
+        max-width: 100%; 
+    }
+    h1{
+        text-align: center; 
+        margin-left: 10px;
+    }
+</style>
+{% load static %}
+<h1>歡迎來到ATM主頁面</h1>
+<img src="{%static 'img/atm.jpg' %}" alt="">
+{% endblock %}
