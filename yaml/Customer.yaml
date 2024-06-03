@@ -1,0 +1,7 @@
+- model: atm.customer
+  pk: 1
+  fields:
+    name: John
+    account_number: user123
+    password: user123
+    balance: '1000.000000'

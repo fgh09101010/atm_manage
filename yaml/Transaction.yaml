@@ -1,0 +1,6 @@
+- model: atm.transaction
+  pk: 1
+  fields:
+    Customer: 1
+    time: 2024-06-03 06:39:07.735816+00:00
+    amount: '30.000000'

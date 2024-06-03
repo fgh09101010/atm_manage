@@ -30,7 +30,7 @@ def map(request):
             latitude = atm.address.latitude
             longitude = atm.address.longitude
             ltip = atm.atm_name
-            lpop=f'<a href="/atm/atmdetail/{atm.id}/">More Details</a>'
+            lpop=f'<a href="/atm/atmdetail/{atm.id}/" target = "_blank">More Details</a>'
             #lpop = f'<a href="http://127.0.0.1:8000/atm/atmdetail/{atm.id}/">http://127.0.0.1:8000/atm/atmdetail/</a>'
             #lpop = "<a href='http://127.0.0.1:8000/atm/atmdetail/1'>123</a>"
             if latitude and longitude:  # 確保經緯度不為空
@@ -38,6 +38,7 @@ def map(request):
                     [latitude, longitude],tooltip=ltip,popup=lpop
                 ).add_to(marker_cluster)
             print(latitude)
+            break
         # 將地圖渲染為 HTML 字符串
         map_html = m._repr_html_()
 
@@ -84,3 +85,6 @@ class AtmDetailView(generic.DetailView):
     model = AtmMain
     template_name = 'atm_detail.html'
     context_object_name = 'atm'
+
+    def get_queryset(self):
+        return super().get_queryset().select_related('address', 'city_town')
