@@ -387,3 +387,24 @@ def customer_detail(request, username):
 
     # 渲染模板並返回 HTTP 響應
     return render(request, 'customer_detail.html', context)
+
+def atm_map_search(request):
+    cities = City.objects.all()
+    addresses = AtmAddress.objects.all()
+    selected_city = None
+
+    if request.method == 'GET':
+        city_id = request.GET.get('city')
+        if city_id:
+            selected_city = City.objects.get(pk=city_id)
+
+
+    return render(request, 'atm_map_search.html', {'cities': cities, 'addresses': addresses, 'selected_city': selected_city})
+
+def map_view(request,pk):
+    address = get_object_or_404(AtmAddress, pk=pk)
+    context = {
+        'latitude': address.latitude,
+        'longitude': address.longitude
+    }
+    return render(request, 'address_map.html', context)

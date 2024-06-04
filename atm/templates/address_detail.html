@@ -2,7 +2,7 @@
 {% block content %}
 <h4>地址詳細</h4>
 
-<p><strong>地址:</strong>  {{ atm.address.address }}</p>
+<p><strong>地址:</strong>  <a href="{% url 'map_view' pk=atm.id %}">{{ atm.address.address }}</a></p>
 <p><strong>ATM數量:</strong> {{atm_count}}</p>
 <p><strong>所屬縣市:</strong> <a href="{{ city_town.get_absolute_url }}">{{ atm.city_town.city }}{{ atm.city_town.town }}</a></p>
 <p><strong>英文地址:</strong> {{ atm.address.english_address }}</p>

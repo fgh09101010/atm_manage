@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" method="GET">
+    <label for="city">City:</label>
+    <select name="city" id="city">
+        <option value="">--Select City--</option>
+        {% for city in cities %}
+        <option value="{{ city.pk }}">{{ city }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="address">Address:</label>
+    <select name="address" id="address">
+        <option value="">--Select Address--</option>
+        {% for address in addresses %}
+        <option value="{{ address.pk }}">{{ address.address }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Search</button>
+</form>
+
+{% if selected_city %}
+<h2>Selected City: {{ selected_city }}</h2>
+{% endif %}
+
+{% endblock %}

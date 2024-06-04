@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="javascript:history.back()">返回</a>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5O1mSP56Wl5i_ZdAGarlZswrtk2hZdRs"></script>
+    <script>
+        function initMap() {
+            const location = {lat: {{ latitude|floatformat:"10" }}, lng: {{ longitude|floatformat:"10" }}};
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: location
+            });
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        }
+    </script>
+<body onload="initMap()">
+    <div id="map" style="height: 500px; width: 100%;"></div>
+</body>
+{% endblock %}

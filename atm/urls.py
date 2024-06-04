@@ -27,4 +27,8 @@ urlpatterns = [
     path('payment/', views.payment, name='payment'),
 
     path('customer_detail/<str:username>/', views.customer_detail, name='customer_detail'),
+
+    path('atm_map_search/', views.atm_map_search, name='atm_map_search'),
+
+    path('address/<int:pk>/map', views.map_view, name='map_view'),
 ]
