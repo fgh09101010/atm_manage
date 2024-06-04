@@ -92,7 +92,6 @@ class Transaction(models.Model):
     type = models.CharField(max_length=10, choices=TRANSACTION_TYPES , default="")
     
 
-    source_account = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='source_account', null=True, blank=True)
     destination_account = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='destination_account', null=True, blank=True)
 
     class Meta:

@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('chart/atm', views.chart, name='chart_atm'),
     path('chart/user', views.registration_trend, name='chart_user'),
+    path('chart/transaction', views.transaction_chart, name='chart_transaction'),
 
 
     path("restart_map/", views.restart_map, name="restart"),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('withdraw/', views.withdraw, name='withdraw'),
     path('transfer/', views.transfer, name='transfer'),
     path('payment/', views.payment, name='payment'),
+
+    path('customer_detail/<str:username>/', views.customer_detail, name='customer_detail'),
 ]

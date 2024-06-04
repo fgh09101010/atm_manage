@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>總交易金額: {{ data.total }}</h2>
+<div style="width: 80%;height: 500px; margin: auto;">
+    <canvas id="registrationChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('registrationChart').getContext('2d');
+
+        // 获取从视图传递的用户注册数量数据
+        var registrationData = {{ data|safe }};
+
+        var registrationChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: registrationData.labels,
+                datasets: [{
+                    label: '存款',
+                    data: registrationData.deposit,
+                    backgroundColor: 'rgba(255, 99, 132, 1)', // 背景颜色
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: '取款',
+                    data: registrationData.withdraw,
+                    backgroundColor: 'rgba(54, 162, 235, 1)', // 背景颜色
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: '轉帳',
+                    data: registrationData.transfer,
+                    backgroundColor: 'rgba(255, 206, 86, 1)', // 背景颜色
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: '支付',
+                    data: registrationData.payment,
+                    backgroundColor: 'rgba(75, 192, 192, 1)', // 背景颜色
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

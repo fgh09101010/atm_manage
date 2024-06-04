@@ -19,4 +19,4 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['customer', 'time', 'amount', 'type', 'source_account', 'destination_account']
+    list_display = ['customer', 'time', 'amount', 'type',  'destination_account']

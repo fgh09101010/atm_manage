@@ -1,4 +1,5 @@
 import subprocess
+
 m=("AtmAddress","AtmMain","City","Customer" ,"Transaction")
 t=("atm_address","atm_main","atm_city","Customer" ,"Transaction")
 for i in range(len(t)):
@@ -6,3 +7,8 @@ for i in range(len(t)):
     command=command.replace("table_name",t[i]).replace("model_name",m[i])
     
     subprocess.run(command, shell=True, check=True)
+
+
+
+command = "python manage.py dumpdata auth.User --format=yaml > yaml/auth_user.yaml" #autg_user
+subprocess.run(command, shell=True, check=True)

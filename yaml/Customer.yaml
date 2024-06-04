@@ -1,7 +1,49 @@
 - model: atm.customer
-  pk: 1
+  pk: 5
   fields:
-    name: John
-    account_number: user123
-    password: user123
-    balance: '1000.000000'
+    user: 3
+    account_number: 000-002
+    balance: '2280.00'
+    join_time: 2024-06-03 18:51:10+00:00
+- model: atm.customer
+  pk: 6
+  fields:
+    user: 6
+    account_number: 000-003
+    balance: '0.00'
+    join_time: 2024-06-03 18:51:18+00:00
+- model: atm.customer
+  pk: 7
+  fields:
+    user: 7
+    account_number: 000-004
+    balance: '0.00'
+    join_time: 2024-06-04 02:15:55+00:00
+- model: atm.customer
+  pk: 8
+  fields:
+    user: 1
+    account_number: 000-001
+    balance: '9999995069.00'
+    join_time: 2024-06-03 02:16:05+00:00
+- model: atm.customer
+  pk: 9
+  fields:
+    user: 8
+    account_number: 000-005
+    balance: '0.00'
+    join_time: 2024-06-04 02:16:07+00:00
+- model: atm.customer
+  pk: 10
+  fields:
+    user: 9
+    account_number: 000-006
+    balance: '0.00'
+    join_time: 2024-06-04 02:16:09+00:00
+- model: atm.customer
+  pk: 11
+  fields:
+    user: 10
+    account_number: 000-007
+    balance: '0.00'
+    join_time: 2024-06-04 02:16:11+00:00

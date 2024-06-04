@@ -17,6 +17,8 @@ from datetime import datetime
 from django.utils import timezone
 import datetime
 from django.utils.timezone import activate
+from django.db.models import Sum
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -198,7 +200,7 @@ def deposit(request):
             customer.save()
 
             # 创建存款交易记录
-            Transaction.objects.create(customer=customer, amount=amount, type='deposit', destination_account=customer)
+            Transaction.objects.create(customer=customer, amount=amount, type='deposit')
 
             return redirect('index')  # 存款成功后重定向到主页
     else:
@@ -211,7 +213,6 @@ def withdraw(request):
     if request.method == 'POST':
         form = WithdrawForm(request.POST)
         if form.is_valid():
-            source_account = request.user.customer
             amount = form.cleaned_data['amount']
             customer = request.user.customer
 
@@ -221,7 +222,7 @@ def withdraw(request):
                 customer.save()
 
                 # 创建取款交易记录
-                Transaction.objects.create(customer=customer, amount=-amount, type='withdraw',source_account=customer)
+                Transaction.objects.create(customer=customer, amount=amount, type='withdraw')
 
                 return redirect('index')  # 取款成功后重定向到主页
             else:
@@ -251,10 +252,10 @@ def transfer(request):
                 destination_account.save()
 
                 # 创建转账交易记录
-                Transaction.objects.create(customer=source_account, amount=-amount, type='transfer', source_account=source_account,destination_account=destination_account)
+                Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
 
                 # 创建另一条转账交易记录，以记录目标账户的收入
-                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', source_account=source_account,destination_account=destination_account)
+                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
 
                 return redirect('index')  # 转账成功后重定向到主页
             else:
@@ -278,7 +279,7 @@ def payment(request):
                 customer.save()
 
 
-                Transaction.objects.create(customer=customer, amount=-amount, type='payment', source_account=customer)
+                Transaction.objects.create(customer=customer, amount=amount, type='payment')
 
                 return redirect('index')  
             else:
@@ -288,7 +289,7 @@ def payment(request):
     return render(request, 'payment.html', {'form': form})
 
 def registration_trend(request):
-    activate('Asia/Taipei')
+    #activate('Asia/Taipei')
 
     today = timezone.localtime(timezone.now()).date()
 
@@ -315,3 +316,74 @@ def registration_trend(request):
         registration_data['data'].append(num_customers)
         registration_data['user_count']+=num_customers
     return render(request, 'chart_user.html', {'registration_data': registration_data})
+
+
+def transaction_chart(request):
+
+    today = timezone.localtime(timezone.now()).date()
+
+
+    past_month = [today - datetime.timedelta(days=i) for i in range(29, -1, -1)]
+
+
+    data = {
+        'labels': [],
+        'deposit': [],
+        'withdraw': [],
+        'transfer': [],
+        'payment': [],
+        'total':0,
+    }
+
+    for day in past_month:
+
+        start_of_day = timezone.make_aware(datetime.datetime.combine(day, datetime.time.min))
+        end_of_day = timezone.make_aware(datetime.datetime.combine(day, datetime.time.max))
+
+        customers_on_day = Transaction.objects.filter(time__range=(start_of_day, end_of_day))
+        num = customers_on_day
+
+
+        deposit_amount = num.filter(type="deposit").aggregate(total_amount=Sum('amount'))['total_amount']
+        if deposit_amount is None:deposit_amount = 0
+        
+        withdraw_amount = num.filter(type="withdraw").aggregate(total_amount=Sum('amount'))['total_amount']
+        if withdraw_amount is None:withdraw_amount = 0
+
+        transfer_amount = num.filter(type="transfer").aggregate(total_amount=Sum('amount'))['total_amount']
+        if transfer_amount is None:transfer_amount = 0
+
+        payment_amount = num.filter(type="payment").aggregate(total_amount=Sum('amount'))['total_amount']
+        if payment_amount is None:payment_amount = 0
+
+        data['labels'].append(day.strftime('%Y-%m-%d'))
+        data['deposit'].append(float(deposit_amount))
+        data['withdraw'].append(float(withdraw_amount))
+        data['transfer'].append(float(transfer_amount))
+        data['payment'].append(float(payment_amount))
+        data['total']+=float(deposit_amount)+float(withdraw_amount)+float(transfer_amount)+float(payment_amount)
+        
+    return render(request, 'chart_transaction.html', {'data': data})
+
+def customer_detail(request, username):
+    # 根據用戶名獲取相應的用戶對象
+    user = User.objects.get(username=username)
+
+    # 通過用戶對象獲取相應的客戶對象
+    customer = Customer.objects.get(user=user)
+
+    # 獲取客戶的餘額
+    balance = customer.balance
+
+    # 獲取客戶的所有交易記錄
+    transactions = Transaction.objects.filter(customer=customer).order_by('-time')
+
+    # 將用戶名、餘額和交易記錄傳遞到模板中
+    context = {
+        'username': username,
+        'balance': balance,
+        'transactions': transactions,
+    }
+
+    # 渲染模板並返回 HTTP 響應
+    return render(request, 'customer_detail.html', context)

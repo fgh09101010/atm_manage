@@ -1,6 +1,64 @@
 - model: atm.transaction
-  pk: 1
+  pk: 31
   fields:
-    Customer: 1
-    time: 2024-06-03 06:39:07.735816+00:00
-    amount: '30.000000'
+    customer: 8
+    time: 2024-06-04 03:57:51.328689+00:00
+    amount: '100.00'
+    type: deposit
+    destination_account: null
+- model: atm.transaction
+  pk: 32
+  fields:
+    customer: 8
+    time: 2024-06-04 03:57:54.598276+00:00
+    amount: '10.00'
+    type: withdraw
+    destination_account: null
+- model: atm.transaction
+  pk: 33
+  fields:
+    customer: 8
+    time: 2024-06-04 03:57:57.926320+00:00
+    amount: '1000.00'
+    type: transfer
+    destination_account: null
+- model: atm.transaction
+  pk: 35
+  fields:
+    customer: 8
+    time: 2024-06-04 03:58:00.748764+00:00
+    amount: '100.00'
+    type: payment
+    destination_account: null
+- model: atm.transaction
+  pk: 36
+  fields:
+    customer: 8
+    time: 2024-06-04 03:58:20.811984+00:00
+    amount: '100.00'
+    type: transfer
+    destination_account: null
+- model: atm.transaction
+  pk: 37
+  fields:
+    customer: 5
+    time: 2024-06-04 03:58:20.813082+00:00
+    amount: '100.00'
+    type: transfer
+    destination_account: 8
+- model: atm.transaction
+  pk: 38
+  fields:
+    customer: 5
+    time: 2024-06-04 03:59:01.600285+00:00
+    amount: '100.00'
+    type: transfer
+    destination_account: null
+- model: atm.transaction
+  pk: 39
+  fields:
+    customer: 8
+    time: 2024-06-04 03:59:01.601287+00:00
+    amount: '100.00'
+    type: transfer
+    destination_account: 5
