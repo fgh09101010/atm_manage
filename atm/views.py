@@ -405,6 +405,7 @@ def map_view(request,pk):
     address = get_object_or_404(AtmAddress, pk=pk)
     context = {
         'latitude': address.latitude,
-        'longitude': address.longitude
+        'longitude': address.longitude,
+        'google_api_key': os.getenv('GOOGLE_API_KEY')
     }
     return render(request, 'address_map.html', context)
