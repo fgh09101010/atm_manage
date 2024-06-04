@@ -34,22 +34,38 @@
               <a class="nav-link" href="{% url 'map' %}">ATM地圖</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'chart' %}">圖表</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="{% url 'atms' %}">ATM列表</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'restart' %}">重新整理地圖</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                圖表
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'chart_atm' %}">ATM數量</a></li>
+                <li><a class="dropdown-item" href="{% url 'chart_user' %}">使用者數量</a></li>
+              </ul>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 ATM功能
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">註冊帳號</a></li>
-                <li><a class="dropdown-item" href="#">存錢</a></li>
-                <li><a class="dropdown-item" href="#">領錢</a></li>
+                <li><a class="dropdown-item" href="{% url 'register' %}">註冊</a></li>
+                <li><a class="dropdown-item" href="{% url 'login' %}">登錄</a></li>
+                <li><a class="dropdown-item" href="{% url 'deposit' %}">存錢</a></li>
+                <li><a class="dropdown-item" href="{% url 'withdraw' %}">領錢</a></li>
+                <li><a class="dropdown-item" href="{% url 'transfer' %}">轉帳</a></li>
+                <li><a class="dropdown-item" href="{% url 'payment' %}">支付</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                管理者
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'restart' %}">重新整理地圖</a></li>
+                <li><a class="dropdown-item" href="#">atm 資料管理</a></li>
+                <li><a class="dropdown-item" href="#">使用者 資料管理</a></li>
               </ul>
             </li>
           </ul>
@@ -63,19 +79,7 @@
     
     
     <div class="container-fluid">
-        <div class="row">
-          <!-- <div class="col-sm-2 sidebar">
-            {% block sidebar %}
-            <h4>使用者介面</h4>
-            <ul class="sidebar-nav">
-              <li><a href="{% url 'index' %}">首頁</a></li>
-              <li><a href="{% url 'map' %}">ATM地圖</a></li>
-              <li><a href="{% url 'chart' %}">圖表</a></li>
-              <li><a href="{% url 'atms' %}">ATM列表</a></li>
-            </ul>
-            {% endblock %}
-          </div> -->
-          
+        <div class="row">         
           <div class="col-sm-11 " style="height: auto; text-align: center; ">
                 
                 {% block content %}{% endblock %}

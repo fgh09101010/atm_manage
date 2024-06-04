@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 <h4>縣市詳細</h4>
-<p><strong>所屬縣市:</strong> {{ atm.city_town.city }}{{ atm.city_town.town }}</p>
+<p><strong>所屬縣市:</strong> {{ city }}</p>
 <p><strong>ATM數量:</strong> {{atm_count}}</p>
-
+<div>
+    <h4>所有地址</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>地址</th>
+                <th>英文地址</th>
+                <th>緯度</th>
+                <th>經度</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for address in addresses %}
+            <tr>
+                <td><a href="{% url 'address_detail' address.pk %}">{{ city }}{{ address.address }}</a></td>
+                <td>{{ address.english_address }}</td>
+                <td>{{ address.latitude }}</td>
+                <td>{{ address.longitude }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

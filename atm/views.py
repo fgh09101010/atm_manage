@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .models import AtmAddress,AtmMain,City
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import AtmAddress,AtmMain,City,Customer,Transaction
 import random
-from django.db.models import Count
+from django.db.models import Count, functions
 import folium
 from folium.plugins import MarkerCluster
 from django.core.cache import cache
@@ -9,6 +9,14 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 import os
+from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.db import models
+from datetime import datetime
+from django.utils import timezone
+import datetime
+from django.utils.timezone import activate
 
 
 # Create your views here.
@@ -42,10 +50,11 @@ def chart(request):
         'values': values,
         'background_colors': background_colors,
         'border_colors': border_colors,
+        "atm_count":AtmMain.objects.count(),
     }
 
 
-    return render(request, 'chart.html', chart_data)
+    return render(request, 'chart_atm.html', chart_data)
 
 class AtmListView(generic.ListView):
     model = AtmMain
@@ -83,22 +92,26 @@ class AddressDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_address = self.get_object().address
-        atm_count = AtmMain.objects.filter(address=current_address).count()
-        context['atm_count'] = atm_count
+        atm = self.get_object()
+        address = atm.address
+        context['atm_count'] = AtmMain.objects.filter(address=address).count()
+        context['city_town'] = atm.city_town  # 使用 atm 对象的 city_town 属性
+        
         return context
 
-
 class CityDetailView(generic.DetailView):
-    model = AtmMain
+    model = City  # 將 model 設置為 City
     template_name = 'city_detail.html'
-    context_object_name = 'atm'
+    context_object_name = 'city'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_address = self.get_object().city_town
-        atm_count = AtmMain.objects.filter(city_town=current_address).count()
+        city = self.get_object()  # 獲取城市對象
+        atm_count = AtmMain.objects.filter(city_town=city).count()
+        context["city"]=city
         context['atm_count'] = atm_count
+        context['addresses'] = AtmAddress.objects.filter(atmmain__city_town=city)
+
         return context
     
 
@@ -134,6 +147,171 @@ def restart_map(request):
 
 
 
-    context = {'map': "成功"}
+    context = {'map': "地圖重整成功"}
 
     return render(request, 'restart_map.html', context)
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+
+            # 创建并关联 Customer 实例
+            Customer.objects.create(user=user)
+
+            login(request, user)
+            return redirect('index')
+    else:
+        form = RegisterForm()
+    return render(request, 'register.html', {'form': form})
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('index') 
+            else:
+                form.add_error(None, '用户名或密码不正确')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
+
+
+@login_required
+def deposit(request):
+    if request.method == 'POST':
+        form = DepositForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            customer = request.user.customer
+            customer.balance += amount
+            customer.save()
+
+            # 创建存款交易记录
+            Transaction.objects.create(customer=customer, amount=amount, type='deposit', destination_account=customer)
+
+            return redirect('index')  # 存款成功后重定向到主页
+    else:
+        form = DepositForm()
+    return render(request, 'deposit.html', {'form': form})
+
+
+@login_required
+def withdraw(request):
+    if request.method == 'POST':
+        form = WithdrawForm(request.POST)
+        if form.is_valid():
+            source_account = request.user.customer
+            amount = form.cleaned_data['amount']
+            customer = request.user.customer
+
+            # 检查用户余额是否足够
+            if amount <= customer.balance:
+                customer.balance -= amount
+                customer.save()
+
+                # 创建取款交易记录
+                Transaction.objects.create(customer=customer, amount=-amount, type='withdraw',source_account=customer)
+
+                return redirect('index')  # 取款成功后重定向到主页
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = WithdrawForm()
+    return render(request, 'withdraw.html', {'form': form})
+
+@login_required
+def transfer(request):
+    if request.method == 'POST':
+        form = TransferForm(request.POST)
+        if form.is_valid():
+            source_account = request.user.customer
+            destination_account_number = form.cleaned_data['destination_account_number']
+            destination_account = Customer.objects.get(account_number=destination_account_number)
+            amount = form.cleaned_data['amount']
+
+            # 检查源账户余额是否足够
+            if amount <= source_account.balance:
+                # 更新源账户余额
+                source_account.balance -= amount
+                source_account.save()
+
+                # 更新目标账户余额
+                destination_account.balance += amount
+                destination_account.save()
+
+                # 创建转账交易记录
+                Transaction.objects.create(customer=source_account, amount=-amount, type='transfer', source_account=source_account,destination_account=destination_account)
+
+                # 创建另一条转账交易记录，以记录目标账户的收入
+                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', source_account=source_account,destination_account=destination_account)
+
+                return redirect('index')  # 转账成功后重定向到主页
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = TransferForm()
+    return render(request, 'transfer.html', {'form': form})
+
+@login_required
+def payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            customer = request.user.customer
+            amount = form.cleaned_data['amount']
+
+
+            if amount <= customer.balance:
+
+                customer.balance -= amount
+                customer.save()
+
+
+                Transaction.objects.create(customer=customer, amount=-amount, type='payment', source_account=customer)
+
+                return redirect('index')  
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = PaymentForm()
+    return render(request, 'payment.html', {'form': form})
+
+def registration_trend(request):
+    activate('Asia/Taipei')
+
+    today = timezone.localtime(timezone.now()).date()
+
+
+    past_month = [today - datetime.timedelta(days=i) for i in range(29, -1, -1)]
+
+
+    registration_data = {
+        'labels': [],
+        'data': [],
+        'user_count':0
+    }
+
+    for day in past_month:
+
+        start_of_day = timezone.make_aware(datetime.datetime.combine(day, datetime.time.min))
+        end_of_day = timezone.make_aware(datetime.datetime.combine(day, datetime.time.max))
+
+        customers_on_day = Customer.objects.filter(join_time__range=(start_of_day, end_of_day))
+        num_customers = customers_on_day.count()
+
+
+        registration_data['labels'].append(day.strftime('%Y-%m-%d'))
+        registration_data['data'].append(num_customers)
+        registration_data['user_count']+=num_customers
+    return render(request, 'chart_user.html', {'registration_data': registration_data})

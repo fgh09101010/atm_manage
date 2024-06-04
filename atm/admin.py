@@ -15,8 +15,8 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display =("name", "account_number", "password", "balance")
+    list_display =("user", "balance","account_number","join_time")
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display =("Customer", "time", "amount")
+    list_display = ['customer', 'time', 'amount', 'type', 'source_account', 'destination_account']

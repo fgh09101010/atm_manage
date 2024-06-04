@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>30天註冊總數:{{registration_data.user_count}}</h2>
+<div style="width: 80%;height: 500px; margin: auto;">
+    <canvas id="registrationChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('registrationChart').getContext('2d');
+
+        // 获取从视图传递的用户注册数量数据
+        var registrationData = {{ registration_data|safe }};
+
+        var registrationChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: registrationData.labels,
+                datasets: [{
+                    label: '用户注册数量',
+                    data: registrationData.data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '日期'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '注册数量'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
