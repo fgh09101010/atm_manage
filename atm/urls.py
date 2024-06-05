@@ -34,7 +34,10 @@ urlpatterns = [
     
 
     path('rate/', TemplateView.as_view(template_name='rate.html'), name='rate'),
-    path('exchange-rate/', TemplateView.as_view(template_name='exchange_rate.html'), name='exchange_rate'),
+    path('exchange-rate/', views.exchange_rate, name='exchange_rate'),
+    path('convert/', views.convert_currency, name='convert_currency'),
+    path('result/', views.result, name = 'result'),
+
 
     path('users/', views.user_list, name='user_list'),
     path('users/<int:user_id>/', views.user_detail, name='user_detail'),

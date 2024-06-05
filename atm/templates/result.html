@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .form-control1{
+        width: 25%;
+        margin: 0 auto; /* 将左右边距设置为 auto */
+        display: flex;
+        justify-content: center;
+    }
+    #disabledTextInput{
+        text-align: center;
+    }
+</style>
+
+{% load static %}
+
+    <h1>Conversion Result</h1>
+    {% if converted_amount is not None %}
+        <form>
+            <fieldset disabled>
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">原始幣別 Original</label>
+                <br>
+                {{ from_currency }}
+                <input type="text" id="disabledTextInput" class="form-control1" placeholder="{{ amount }}">
+                
+            </div>
+            <div class="mb-3">
+                <label for="disabledSelect" class="form-label">兌換幣別 Exchange</label>
+                <br>
+                {{ to_currency }}
+                <input type="text" id="disabledTextInput" class="form-control1" placeholder="{{ converted_amount }}">
+                
+            </div>        
+            </fieldset>
+        </form>
+    {% else %}
+        <p>Conversion failed. Please check the currency codes.</p>
+    {% endif %}
+    <a href="{% url 'convert_currency' %}"><button type="button" class="btn btn-primary">Convert</button></a>
+
+
+{% endblock %}

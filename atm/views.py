@@ -485,3 +485,211 @@ def atm_filter_map(request):
     data = request.GET.get('data', None)
 
     return render(request, 'atm_filter_map.html', {'data': data})
+
+EXCHANGE_RATES = {
+    'TW':{
+        'rate': 1,
+    },
+    'USD': {
+        'img': 'img/USD.svg',
+        'spot_buy': '32.3500',
+        'spot_sell': '32.4500',
+        'digital_discount_buy': '32.3800',
+        'digital_discount_sell': '32.4200',
+        'cash_buy': '32.0700',
+        'cash_sell': '32.6700',
+        'rate': 32.34,
+    },
+    'EUR': {
+        'img': 'img/EUR.svg',
+        'spot_buy': '34.9400',
+        'spot_sell': '35.4400',
+        'digital_discount_buy': '35.0000',
+        'digital_discount_sell': '35.3800',
+        'cash_buy': '34.5100',
+        'cash_sell': '35.7900',
+        'rate': 35.21,
+    },
+    'JPY': {
+        'img': 'img/JPY.svg',
+        'spot_buy': '0.2064',
+        'spot_sell': '0.2114',
+        'digital_discount_buy': '0.2074',
+        'digital_discount_sell': '0.2104',
+        'cash_buy': '0.2024',
+        'cash_sell': '0.2134',
+        'rate': 0.21,
+    },
+    'CNY': {
+        'img': 'img/CNY.svg',
+        'spot_buy': '4.4300',
+        'spot_sell': '4.5050',
+        'digital_discount_buy': '4.4400',
+        'digital_discount_sell': '4.4950',
+        'cash_buy': '4.3300',
+        'cash_sell': '4.5250',
+        'rate': 4.46,
+    },
+    'HKD': {
+        'img': 'img/HKD.svg',
+        'spot_buy': '4.1120',
+        'spot_sell': '4.1820',
+        'digital_discount_buy': '4.1220',
+        'digital_discount_sell': '4.1720',
+        'cash_buy': '4.0320',
+        'cash_sell': '4.2220',
+        'rate': 4.14,
+    },
+    'AUD': {
+        'img': 'img/AUD.svg',
+        'spot_buy': '21.3800',
+        'spot_sell': '21.6400',
+        'digital_discount_buy': '21.4100',
+        'digital_discount_sell': '21.6100',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 21.51,
+    },
+    'NZD': {
+        'img': 'img/NZD.svg',
+        'spot_buy': '19.8200',
+        'spot_sell': '20.1200',
+        'digital_discount_buy': '19.8400',
+        'digital_discount_sell': '20.1000',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 20.02,
+    },
+    'ZAR': {
+        'img': 'img/ZAR.svg',
+        'spot_buy': '1.6760',
+        'spot_sell': '1.7960',
+        'digital_discount_buy': '1.6810',
+        'digital_discount_sell': '1.7910',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 1.71,
+    },
+    'CAD': {
+        'img': 'img/CAD.svg',
+        'spot_buy': '23.4800',
+        'spot_sell': '23.8800',
+        'digital_discount_buy': '23.5100',
+        'digital_discount_sell': '23.8500',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 23.65,
+    },
+    'GBP': {
+        'img': 'img/GBP.svg',
+        'spot_buy': '41.1100',
+        'spot_sell': '41.7300',
+        'digital_discount_buy': '41.1700',
+        'digital_discount_sell': '41.6700',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 41.36,
+    },
+    'CHF': {
+        'img': 'img/CHF.svg',
+        'spot_buy': '36.1200',
+        'spot_sell': '36.6400',
+        'digital_discount_buy': '36.1500',
+        'digital_discount_sell': '36.6100',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+    'SEK': {
+        'img': 'img/SEK.svg',
+        'spot_buy': '3.0400',
+        'spot_sell': '3.1600',
+        'digital_discount_buy': '3.0500',
+        'digital_discount_sell': '3.1500',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+    'SGD': {
+        'img': 'img/SGD.svg',
+        'spot_buy': '23.8500',
+        'spot_sell': '24.1500',
+        'digital_discount_buy': '23.8800',
+        'digital_discount_sell': '24.1200',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+    'THB': {
+        'img': 'img/THB.svg',
+        'spot_buy': '0.8510',
+        'spot_sell': '0.9110',
+        'digital_discount_buy': '0.8540',
+        'digital_discount_sell': '0.9080',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+    'DKK': {
+        'img': 'img/DKK.svg',
+        'spot_buy': '4.6300',
+        'spot_sell': '4.7900',
+        'digital_discount_buy': '4.6400',
+        'digital_discount_sell': '4.7800',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+    'TRY': {
+        'img': 'img/TRY.svg',
+        'spot_buy': '0.6340',
+        'spot_sell': '1.3540',
+        'digital_discount_buy': '0.6640',
+        'digital_discount_sell': '1.3240',
+        'cash_buy': '--',
+        'cash_sell': '--',
+        'rate': 30,
+    },
+}
+
+def exchange_rate(request):
+    currency = request.GET.get('currency', 'USD')
+    rates = EXCHANGE_RATES.get(currency, None)
+    context = {
+        'currency': currency,
+        'rates': rates,
+    }
+    return render(request, 'exchange_rate.html', context)
+
+
+def convert_currency(request):
+    return render(request, 'convert.html')
+
+def result(request):
+    
+    if request.method == 'POST':
+        amount = float(request.POST['amount'])
+        from_currency = request.POST['from_currency']
+        to_currency = request.POST['to_currency']
+
+        from_rate = EXCHANGE_RATES.get(from_currency, {}).get('rate', None)
+        to_rate = EXCHANGE_RATES.get(to_currency, {}).get('rate', None)
+
+        if from_rate is None or to_rate is None:
+            converted_amount = None
+        else:
+            converted_amount = round(amount / (to_rate / from_rate), 2)
+
+        context = {
+            'amount': amount,
+            'from_currency': from_currency,
+            'to_currency': to_currency,
+            'converted_amount': converted_amount,
+            'from_img': EXCHANGE_RATES.get(from_currency, {}).get('img', ''),
+            'to_img': EXCHANGE_RATES.get(to_currency, {}).get('img', '')
+        }
+        return render(request, 'result.html', context)
+    
+
+def rate(request):
+    return render(request, 'rate.html')

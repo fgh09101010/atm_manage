@@ -28,9 +28,21 @@
         </div>
         <div class="col-md-4 mb-4">
             <div class="card">
-                <a href="{% url 'customer_detail'%}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                <a href="{% url 'convert_currency' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
                     <div class="cubre-m-quickLink__icon">
                         <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">匯率換算</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'customer_detail'%}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/account.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_4D101EA0873E4FD39BB47646B9264234">
                     </div>
                     <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
                         <span class="exchange-rate-text">查看餘額</span>
@@ -42,7 +54,7 @@
             <div class="card">
                 <a href="{% url 'transfer' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
                     <div class="cubre-m-quickLink__icon">
-                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
                     </div>
                     <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
                         <span class="exchange-rate-text">轉帳</span>
@@ -54,7 +66,7 @@
             <div class="card">
                 <a href="{% url 'withdraw' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
                     <div class="cubre-m-quickLink__icon">
-                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
                     </div>
                     <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
                         <span class="exchange-rate-text">領錢</span>
@@ -66,7 +78,7 @@
             <div class="card">
                 <a href="{% url 'deposit' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
                     <div class="cubre-m-quickLink__icon">
-                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
                     </div>
                     <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
                         <span class="exchange-rate-text">存錢</span>

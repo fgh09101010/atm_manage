@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .form-select{
+        width: 220px;
+        height: 30px;
+    }
+</style>
+{% load static %}
+
+    <h1>Currency Converter</h1>
+    <form method="post" action = "{%url 'result' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" step="0.01" required>
+        </div>
+        <div class="mb-3">
+            <label for="from_currency">From:</label>
+            <select class="form-select" aria-label="Default select example" name = "from_currency" required>
+                <option value="TW">TW</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
+                <option value="CNY">CNY</option>
+                <option value="HKD">HKD</option>
+                <option value="AUD">AUD</option>
+                <option value="NZD">NZD</option>
+                <option value="ZAR">ZAR</option>
+                <option value="CAD">CAD</option>
+                <option value="GBP">GBP</option>
+                <option value="CHF">CHF</option>
+                <option value="SEK">SEK</option>
+                <option value="SGD">SGD</option>
+                <option value="THB">THB</option>
+                <option value="DKK">DKK</option>
+                <option value="TRY">TRY</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="to_currency">To:</label>
+            <select class="form-select" aria-label="Default select example" name = "to_currency" required>
+                <option value="TW">TW</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
+                <option value="CNY">CNY</option>
+                <option value="HKD">HKD</option>
+                <option value="AUD">AUD</option>
+                <option value="NZD">NZD</option>
+                <option value="ZAR">ZAR</option>
+                <option value="CAD">CAD</option>
+                <option value="GBP">GBP</option>
+                <option value="CHF">CHF</option>
+                <option value="SEK">SEK</option>
+                <option value="SGD">SGD</option>
+                <option value="THB">THB</option>
+                <option value="DKK">DKK</option>
+                <option value="TRY">TRY</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Convert</button>
+    </form>
+
+{% endblock %}
