@@ -22,14 +22,14 @@ class LoginForm(forms.Form):
 
 
 class DepositForm(forms.Form):
-    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='存款金额')
+    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='存款金額')
 
 class WithdrawForm(forms.Form):
-    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='取款金额')
+    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='取款金額')
 
 class TransferForm(forms.Form):
-    destination_account_number = forms.CharField(label='目标账户号码', initial='000-001')
-    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='转账金额')
+    destination_account_number = forms.CharField(label='目標帳戶', initial='000-001')
+    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='轉帳金額')
 
 class PaymentForm(forms.Form):
-    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='支付金额')
+    amount = forms.DecimalField(max_digits=15, decimal_places=2, label='支付金額')

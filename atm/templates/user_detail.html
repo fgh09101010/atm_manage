@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>使用者詳細資料</h1>
+<h3>使用者名稱: {{ user.username }}</h3>
+<h3>帳號代碼:{{user.customer.account_number}}</h3>
+<h3>餘額:{{user.customer.balance}}</h3>
+<h3>加入時間:{{user.customer.join_time}}</h3>
+
+<!-- Display user information here -->
+<h2>交易:</h2>
+<table class="table">
+  <thead>
+    <tr>
+        <th>時間</th>
+        <th>類型</th>
+        <th>金額</th>
+        <th>來自</th>
+      <!-- Add other transaction fields here if needed -->
+    </tr>
+  </thead>
+  <tbody>
+    {% if transactions %}
+      {% for transaction in transactions %}
+      <tr>
+        <td>{{ transaction.time }}</td>
+        <td>{{ transaction.get_type_display }}</td>
+        {% if transaction.type == "payment" or transaction.type == "withdraw" %}
+        <td style="color: red;">*{{ transaction.amount }}</td>
+        {% elif transaction.type == "transfer" and not transaction.destination_account %}
+        <td style="color: red;">*{{ transaction.amount }}</td>
+        {% else %}
+        <td>{{ transaction.amount }}</td>
+        {% endif %}
+        <td>{{ transaction.destination_account }}</td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="3">No transactions found.</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

@@ -35,4 +35,7 @@ urlpatterns = [
 
     path('rate/', TemplateView.as_view(template_name='rate.html'), name='rate'),
     path('exchange-rate/', TemplateView.as_view(template_name='exchange_rate.html'), name='exchange_rate'),
+
+    path('users/', views.user_list, name='user_list'),
+    path('users/<int:user_id>/', views.user_detail, name='user_detail'),
 ]

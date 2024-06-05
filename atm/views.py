@@ -410,3 +410,20 @@ def map_view(request,pk):
         'google_api_key': os.getenv('GOOGLE_API_KEY'),
     }
     return render(request, 'address_map.html', context)
+
+def user_list(request):
+    users = User.objects.all()
+    context={
+        "users" : users
+    }
+    return render(request, 'user_list.html', context=context)
+
+def user_detail(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    
+    transactions = Transaction.objects.filter(customer__user=user).order_by('-time')
+    context={   
+        'user': user, 
+         'transactions': transactions
+    }
+    return render(request, 'user_detail.html', context=context)

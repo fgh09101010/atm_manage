@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>名稱</th>
+        <th>帳號代碼</th>
+        <th>餘額</th>
+        <th>加入時間</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{% url 'user_detail' user.id %}">{{ user.username }}</a></td>
+                <td>{{user.customer.account_number}}</td>
+                <td>{{user.customer.balance}}</td>
+                <td>{{user.customer.join_time}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    
+</ul>
+{% endblock %}
