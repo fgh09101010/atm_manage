@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .card{
+        margin-top: 10px;
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0, .15);
+    }
+    img{
+        padding-top: 30px;
+    }
+    h4{
+        margin-top: 15px;
+    }
+    .form-group button[type="button"] {
+        background-color: #4CAF50; /* adjust the button color to your liking */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .form-group button[type="button"]:hover {
+        background-color: #3e8e41; /* adjust the hover background color to your liking */
+    }
+</style>
+{% load static %}
+{% if rates %}
+    <a href="{% url 'rate' %}"><button type = "button" class="btn btn-primary">返回</button></a>
+
+    <div class="card mb-3 mx-auto" style="max-width: 1000px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+            <img src="{% static rates.img %}" class="img-fluid rounded-start" alt="...">
+            <h4>{{ currency }}</h4>
+            </div>
+            <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-left">項目</th>
+                        <th scope="col">銀行買進</th>
+                        <th scope="col">銀行賣出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> 
+                        <td class="text-left">即期匯率</td>
+                        <td>{{ rates.spot_buy }}</td>
+                        <td>{{ rates.spot_sell }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">數位通路優惠匯率</td>
+                        <td>{{ rates.digital_discount_buy }}</td>
+                        <td>{{ rates.digital_discount_sell }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">現鈔匯率</td>
+                        <td>{{ rates.cash_buy }}</td>
+                        <td>{{ rates.cash_sell }}</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        </div> 
+    {% endif %}
+{% endblock %}
+
+
+

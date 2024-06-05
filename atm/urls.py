@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.urls import path
-
+from django.views.generic import TemplateView
 
 #app_name = 'atm'
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path('atmlist/', views.AtmListView.as_view(), name='atms'),
     path("atmdetail/<pk>/", views.AtmDetailView.as_view(), name="atm_detail"),
     path("address/<pk>/", views.AddressDetailView.as_view(), name="address_detail"),
+    path('address/<int:pk>/map', views.map_view, name='map_view'),
     path("city/<pk>/", views.CityDetailView.as_view(), name="city_detail"),
 
     path('chart/atm', views.chart, name='chart_atm'),
@@ -26,9 +27,12 @@ urlpatterns = [
     path('transfer/', views.transfer, name='transfer'),
     path('payment/', views.payment, name='payment'),
 
-    path('customer_detail/<str:username>/', views.customer_detail, name='customer_detail'),
+    path('customer_detail', views.customer_detail, name='customer_detail'),
 
     path('atm_map_search/', views.atm_map_search, name='atm_map_search'),
 
-    path('address/<int:pk>/map', views.map_view, name='map_view'),
+    
+
+    path('rate/', TemplateView.as_view(template_name='rate.html'), name='rate'),
+    path('exchange-rate/', TemplateView.as_view(template_name='exchange_rate.html'), name='exchange_rate'),
 ]

@@ -365,8 +365,9 @@ def transaction_chart(request):
         
     return render(request, 'chart_transaction.html', {'data': data})
 
-def customer_detail(request, username):
+def customer_detail(request):
     # 根據用戶名獲取相應的用戶對象
+    username=request.user
     user = User.objects.get(username=username)
 
     # 通過用戶對象獲取相應的客戶對象

@@ -1,97 +1,136 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-  }
+  background: linear-gradient(120deg, #f0f8ff, #b0e0e6);
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  margin-top: 30px;
+  flex: 1;
+}
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.card-title {
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+.card-body {
+  padding: 40px 20px;
+}
+footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+img{
+height: 500px; 
+max-width: 100%; 
+}
+h1{
+text-align: center; 
+margin-left: 10px;
+}
+.marquee {
+width: 75%;
+overflow: hidden;
+white-space: nowrap;
+box-sizing: border-box;
+animation: marquee 10s linear infinite;
+}
 
-  .sidebar {
-    background-color: #343a40;
-    color: #fff;
-    height: 100vh;
-    padding: 20px;
-    border-right: 3px solid black;
-  }
+@keyframes marquee {
+from { transform: translateX(45%); }
+to { transform: translateX(-125%); }
+}
+.cubre-m-quickLink__img{
+width: 100px;
+height: 100px;
+}
+.cubre-m-quickLink {
+padding: 40px 15px;
+position: relative;
+width: 100%; 
+height: 200px; 
+box-sizing: border-box;
+display: block;
+border-radius: 5px;
+box-shadow: -3px -3px 19px 0 rgba(74, 178, 52, .1), 15px 15px 30px 0 rgba(0, 153, 78, .1);
+background-color: rgba(255, 255, 255, .5);
+transition: .3s;
+}
+.cubre-m-quickLink:hover{
+background: #b3d4fc;
+text-shadow: none;
+}
+#lnk_Link {
+text-decoration: none;
+}
+.atm-logo {
+max-width: 100%;
+width: 750px;
+height: auto;
+border-radius: 50%;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin: 65px auto 30px;
+display: block;
+transition: transform 0.3s;
+}
 
-  .sidebar h4 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
+.atm-logo:hover {
+transform: scale(1.1);
+}
 
-  .sidebar-nav {
-    list-style: none;
-    padding: 0;
-  }
+.atm-logo-container {
+position: relative;
+display: inline-block;
+}
 
-  .sidebar-nav li {
-    margin-bottom: 10px;
-  }
+.atm-tooltip {
+visibility: hidden;
+background-color: #555;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+position: absolute;
+z-index: 1;
+bottom: 85%;
+left: 50%;
+margin-left: -60px;
+opacity: 0;
+transition: opacity 0.3s, visibility 0.3s;
+width: 120px;
+}
 
-  .sidebar-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-    
-  }
+.atm-logo-container:hover .atm-tooltip {
+visibility: visible;
+opacity: 1;
+}
 
-  .sidebar-nav a:hover {
-    color: #ffc107;
-  }
-  .nav-link{
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-    text-align: center;
-  }
-
-  .nav-link:hover {
-    background-color: #dcdcdc;
-    border-radius: 5px; 
-  }
-
-  .content {
-    padding: 20px;
-    border-left: 3px solid black;
-    background-color: #ffffff;
-  }
-
-  .pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .page-links {
-    display: flex;
-    list-style: none;
-    padding: 0;
-  }
-
-  .page-links a {
-    margin: 0 5px;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    text-decoration: none;
-    color: #007bff;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  .page-links a:hover {
-    background-color: #84b0df;
-    color: #fff;
-  }
-
-  .page-current a {
-    margin: 0 5px;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    background-color: #c3e0ff;
-    color: #fff;
-    text-decoration: none;
-  }
-  .navbar-brand{
-    margin-top: 5px;
-  }
+.atm-tooltip::after {
+content: "";
+position: absolute;
+top: 100%;
+left: 50%;
+margin-left: -5px;
+border-width: 5px;
+border-style: solid;
+border-color: #555 transparent transparent transparent;
+}

@@ -1,16 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-    img{
-        height: 500px; 
-        max-width: 100%; 
-    }
-    h1{
-        text-align: center; 
-        margin-left: 10px;
-    }
-</style>
 {% load static %}
-<h1>歡迎來到ATM主頁面</h1>
-<img src="{%static 'img/atm.jpg' %}" alt="">
+<div class="marquee">
+    <h4>最新公告：歡迎訪問我們的銀行主頁！目前我們提供貸款優惠活動，詳情請諮詢客服。| 新聞：本行榮獲最佳客戶服務獎！</h4>
+</div>
+<h1>ATM主頁面</h1>
+
+<div class="atm-logo-container">
+    <img src="{%static 'img/picture1.png' %}" alt="" class = "atm-logo">
+    <div class="atm-tooltip">我是本網站的看板娘</div>
+</div>
+
+
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'rate' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">匯率查詢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'customer_detail'%}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">查看餘額</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'transfer' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">轉帳</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'withdraw' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">領錢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'deposit' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">存錢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
