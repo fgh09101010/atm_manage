@@ -25,8 +25,8 @@
       <tr>
         <td><a href="{% url 'atm_detail' pk=obj.pk %}">{{ obj.id }}</a></td>
         <td>{{ obj.atm_name }}</td>
-        <td><a href="{% url 'city_detail' pk=obj.pk %}">{{ obj.city_town }}</a></td>
-        <td><a href="{% url 'address_detail' pk=obj.pk %}">{{ obj.address }}</a></td>
+        <td><a href="{% url 'city_detail' pk=obj.city_town.pk %}">{{ obj.city_town }}</a></td>
+        <td><a href="{% url 'address_detail' pk=obj.address.pk %}">{{ obj.address }}</a></td>
         <td>{{ obj.service_type }}</td>
         <td>{{ obj.phone }}</td>
       </tr>
