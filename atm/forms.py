@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import City
+
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -33,3 +35,14 @@ class TransferForm(forms.Form):
 
 class PaymentForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='支付金額')
+
+class FilterForm(forms.Form):
+    YES_NO_CHOICES = (
+        ('', 'Select'),
+        ('y', 'Yes'),
+        ('n', 'No'),
+    )
+    city_town = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Select City/Town", required=False)
+    service_time = forms.TimeField(input_formats=['%H:%M'], help_text="Format: 00:00",required=False)
+    use_wheel = forms.ChoiceField(choices=YES_NO_CHOICES, required=False)
+    voice = forms.ChoiceField(choices=YES_NO_CHOICES, required=False)

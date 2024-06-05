@@ -38,4 +38,8 @@ urlpatterns = [
 
     path('users/', views.user_list, name='user_list'),
     path('users/<int:user_id>/', views.user_detail, name='user_detail'),
+
+    path('atm_filter/', views.atm_filter, name='atm_filter'),
+
+
 ]

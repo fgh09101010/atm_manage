@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <style>
+        #map { height: 400px; }
+    </style>
+<body>
+
+    <h1>ATM Filter</h1>
+    <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+    {% if atms.data %}
+    <h2>leaflet.js</h2>
+    <div id="map"></div>
+        <h2>Filtered ATMs</h2>
+        <h3>搜尋到的atm數量:{{atms.data.count}}</h3>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>銀行</th>
+                <th>地區</th>
+                <th>地址</th>
+                <th>營業時間</th>
+                <th>電話</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for atm in atms.data %}
+            <tr>
+                <td><a href="{% url 'atm_detail' pk=atm.pk %}">{{ atm.id }}</a></td>  
+                <td>{{ atm.atm_name }}</td>
+                <td><a href="{% url 'city_detail' pk=atm.pk %}">{{ atm.city_town }}</a></td>  
+                <td><a href="{% url 'address_detail' pk=atm.pk %}">{{ atm.address }}</a></td>
+                <td>{{ atm.service_type }}</td>
+                <td>{{ atm.phone }}</td>
+              
+                </tr>
+            {% endfor %}
+        </tbody>
+        <table>
+    {% else %}
+    <p>There are no atm</p>
+    {% endif %}
+        
+      </tbody>
+      </table>
+
+      
+
+
+
+  
+      <script>
+          var map = L.map('map').setView([{{ atms.data.0.address.latitude }}, {{ atms.data.0.address.longitude }}], 13);
+  
+          // Add the base tile layer from OpenStreetMap
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+  
+          // Loop through your ATM data and add markers to the map
+          {% for atm in atms.data %}
+              L.marker([{{ atm.address.latitude }}, {{ atm.address.longitude }}]).addTo(map)
+                  .bindPopup('{{ atm.city_town }}{{ atm.address }}');
+          {% endfor %}
+      </script>
+</body>
+{% endblock %}

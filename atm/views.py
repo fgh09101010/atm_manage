@@ -9,19 +9,25 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 import os
-from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm
+from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db import models
-from datetime import datetime
+from datetime import datetime, time
 from django.utils import timezone
-import datetime
 from django.utils.timezone import activate
 from django.db.models import Sum
 from django.contrib.auth.models import User
-
-
+from django.http import JsonResponse
+from django.http import HttpResponse
+from django.core.paginator import Paginator
 # Create your views here.
+
+def time_to_minute(x):
+    x=x.split(":")
+    return int(x[0])*60+int(x[1])
+
+
 def index(request):
     atm_address=AtmAddress.objects.all()
     context={
@@ -427,3 +433,55 @@ def user_detail(request, user_id):
          'transactions': transactions
     }
     return render(request, 'user_detail.html', context=context)
+
+
+
+  
+def atm_filter(request):
+    form = FilterForm(request.GET or None)
+    atms = None
+
+    
+    if request.GET and form.is_valid():
+        city_town = form.cleaned_data.get('city_town')
+        service_time = form.cleaned_data.get('service_time')
+        use_wheel = form.cleaned_data.get('use_wheel')
+        voice = form.cleaned_data.get('voice')
+        #atm = AtmMain.objects.filter(city_town=city_town,use_wheel=use_wheel,voice=voice)
+        data=AtmMain.objects.all()
+        if city_town!="":
+            data = data.filter(city_town=city_town)
+
+        if use_wheel!="":
+            data = data.filter(use_wheel=use_wheel)
+        if voice!="":
+            
+            data = data.filter(voice=voice)
+
+        if service_time != "" and service_time!=None:
+            business_atms = []
+            hope_time=time_to_minute(str(service_time))
+            for atm in data:
+                open_time,close_time=atm.service_type.split("~")
+                open_time=time_to_minute(open_time)
+                close_time=time_to_minute(close_time)
+
+                if open_time <= hope_time <= close_time:
+                    business_atms.append(atm)
+            data = business_atms
+
+        
+        atms = {
+            'city_town': city_town,
+            'service_time': service_time,
+            'use_wheel': use_wheel,
+            'voice': voice,
+            'data':data,
+        }
+        
+    return render(request, 'atm_filter.html', {'form': form, 'atms': atms})
+
+def atm_filter_map(request):
+    data = request.GET.get('data', None)
+
+    return render(request, 'atm_filter_map.html', {'data': data})
