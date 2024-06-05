@@ -88,17 +88,17 @@ class AtmDetailView(generic.DetailView):
 
 
 class AddressDetailView(generic.DetailView):
-    model = AtmMain
+    model = AtmAddress
     template_name = 'address_detail.html'
-    context_object_name = 'atm'
+    context_object_name = 'address'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        atm = self.get_object()
-        address = atm.address
+        address = self.get_object()
+        atm_main_instance = AtmMain.objects.filter(address=address).first()
         context['atm_count'] = AtmMain.objects.filter(address=address).count()
-        context['city_town'] = atm.city_town  # 使用 atm 对象的 city_town 属性
-        
+        context['city_town'] = atm_main_instance.city_town if atm_main_instance else "Unknown"
+        context['id'] = address.address_id  # 使用 address_id 而不是 id
         return context
 
 class CityDetailView(generic.DetailView):
@@ -406,6 +406,6 @@ def map_view(request,pk):
     context = {
         'latitude': address.latitude,
         'longitude': address.longitude,
-        'google_api_key': os.getenv('GOOGLE_API_KEY')
+        'google_api_key': os.getenv('GOOGLE_API_KEY'),
     }
     return render(request, 'address_map.html', context)
