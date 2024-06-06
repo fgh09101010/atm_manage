@@ -1,17 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<h4>地址詳細</h4>
 
-<p><strong>地址:</strong>  <a href="{% url 'map_view' pk=id %}">{{ address.address }}</a></p>
-<p><strong>ATM數量:</strong> {{ atm_count }}</p>
-<p><strong>所屬縣市:</strong> 
-    {% if city_town != "Unknown" %}
-        <a href="{{ city_town.get_absolute_url }}">{{ city_town.city }}{{ city_town.town }}</a>
-    {% else %}
-        Unknown
-    {% endif %}
-</p>
-<p><strong>英文地址:</strong> {{ address.english_address }}</p>
-<p><strong>緯度:</strong> {{ address.latitude }}</p>
-<p><strong>經度:</strong> {{ address.longitude }}</p>
+<style>
+    .card-body{
+        padding: 10px 5px
+    }
+</style>
+
+<div class="card" style="width: 23rem; margin: 0 auto;">
+    <div class="card-body">
+        <h4 class="card-title">地址詳細</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><p><strong>地址:</strong>  <a href="{% url 'map_view' pk=id %}">{{ address.address }}</a></p></li>
+        <li class="list-group-item"><p><strong>ATM數量:</strong> {{ atm_count }}</p></li>
+        <li class="list-group-item">
+            <p>
+                <strong>所屬縣市:</strong> 
+                {% if city_town != "Unknown" %}
+                    <a href="{{ city_town.get_absolute_url }}">{{ city_town.city }}{{ city_town.town }}</a>
+                {% else %}
+                    Unknown
+                {% endif %}
+            </p>
+        </li>
+        <li class="list-group-item"><p><strong>英文地址:</strong> {{ address.english_address }}</p></li>
+        <li class="list-group-item"><p><strong>緯度:</strong> {{ address.latitude }}</p></li>
+        <li class="list-group-item"><strong>經度:</strong> {{ address.longitude }}</p></li>
+    </ul>
+    <div class="card-body">
+      <button onclick = "history.back()" class="btn btn-primary" >返回</button>
+    </div>
+  </div>
+
 {% endblock %}

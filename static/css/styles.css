@@ -168,3 +168,8 @@ border-color: #555 transparent transparent transparent;
   background-color: #e9ecef;
   border-color: #dee2e6;
 }
+
+footer{
+  margin-top: auto;
+  padding: 1rem;
+}

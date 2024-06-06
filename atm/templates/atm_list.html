@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="margin: 0 auto; width: 75%;"> <!-- Centering the table -->
+<style>
+  .form-control1{
+    margin-top: 10px;
+  }
+</style>
+
+<div style="margin: 0 auto; width: 75%;"> 
   <form method="GET" action="{% url 'atms' %}">
-    <input type="text" name="q" placeholder="搜索...">
-    <button type="submit">搜索</button>
-    <p>可以透過銀行、縣市、鄉鎮、地址查詢</p>
+    <div class="mb-3">
+      <input type="text" class="form-control1" id="exampleInputEmail1" name = "q" placeholder="搜索..." aria-describedby="emailHelp">
+      <button type="submit" class="btn btn-primary">搜索</button>   
+      <p>可以透過銀行、縣市、鄉鎮、地址查詢</p>
+    </div>
   </form>
+
 
   {% if atm_list %}
   <table class="table table-striped">
