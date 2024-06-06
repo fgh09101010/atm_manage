@@ -88,31 +88,29 @@
     
     
     <div class="container-fluid">        
-          <div class="col-sm-13 " style="height: auto; text-align: center; ">
-                
-                {% block content %}{% endblock %}
-                {% block pagination %}
-                {% if is_paginated %}
-                  <div class="pagination">
-                    <span class="page-links">
+      <div class="col-sm-13" style="height: auto; text-align: center;">
+          {% block content %}{% endblock %}
+          {% block pagination %}
+          {% if is_paginated %}
+              <div class="pagination-container">
+                  <ul class="pagination justify-content-center">
                       {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link" href="{{ request.path }}?page=1">第一頁</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一頁</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ request.path }}?page=1">第一頁</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一頁</a></li>
                       {% endif %}
-                      <span class="page-current">
-                        <li class="page-item"><a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a></li>
-                      </span>
+                      <li class="page-item disabled">
+                          <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+                      </li>
                       {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一頁</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginator.num_pages }}">最後一頁</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一頁</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginator.num_pages }}">最後一頁</a></li>
                       {% endif %}
-                    </span>
-                  </div>
-                {% endif %}
-              {% endblock %}
-          </div>
-
-    </div>
+                  </ul>
+              </div>
+          {% endif %}
+          {% endblock %}
+      </div>
+  </div>
     <!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">
   <!-- Section: Social media -->
