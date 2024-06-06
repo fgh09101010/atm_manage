@@ -7,16 +7,16 @@
     </style>
 <body>
 
-    <h1>ATM Filter</h1>
+    <h1>ATM 過濾器</h1>
     <form method="GET">
         {{ form.as_p }}
-        <button type="submit">Filter</button>
+        <button type="submit">送出</button>
     </form>
     {% if atms.data %}
-    <h2>leaflet.js</h2>
+    <h2>利用leaflet.js繪製</h2>
     <div id="map"></div>
-        <h2>Filtered ATMs</h2>
-        <h3>搜尋到的atm數量:{{atms.data.count}}</h3>
+        <h2>符合的結果:{{atms.atm_count}}筆</h2>
+        <h4>如果atm數量>1000 將只會顯示1000筆</h4>
         <table class="table table-striped">
             <thead>
               <tr>
@@ -43,7 +43,7 @@
         </tbody>
         <table>
     {% else %}
-    <p>There are no atm</p>
+    <p>沒有符合的ATM</p>
     {% endif %}
         
       </tbody>

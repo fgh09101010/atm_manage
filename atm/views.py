@@ -191,7 +191,7 @@ def login_view(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
-            if user is not None:
+            if user  != "":
                 login(request, user)
                 return redirect('index') 
             else:
@@ -455,16 +455,16 @@ def atm_filter(request):
         voice = form.cleaned_data.get('voice')
         #atm = AtmMain.objects.filter(city_town=city_town,use_wheel=use_wheel,voice=voice)
         data=AtmMain.objects.all()
-        if city_town!="" :
+        if city_town is not None:
             data = data.filter(city_town=city_town)
-
-        if use_wheel!="" :
+        
+        if use_wheel  != "":
             data = data.filter(use_wheel=use_wheel)
-        if voice!="":
+        if voice  != "":
             
             data = data.filter(voice=voice)
-
-        if service_time != "" and service_time!=None:
+        
+        if service_time  != "":
             business_atms = []
             hope_time=time_to_minute(str(service_time))
             for atm in data:
@@ -476,13 +476,16 @@ def atm_filter(request):
                     business_atms.append(atm)
             data = business_atms
 
-        
+        atm_count=len(data)
+        if len(data)>=1000:
+            data=data[:1000]
         atms = {
             'city_town': city_town,
             'service_time': service_time,
             'use_wheel': use_wheel,
             'voice': voice,
             'data':data,
+            'atm_count':atm_count,
         }
         
     return render(request, 'atm_filter.html', {'form': form, 'atms': atms})
