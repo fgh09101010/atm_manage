@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.core.paginator import Paginator
+from django.template.loader import get_template, TemplateDoesNotExist
 # Create your views here.
 
 def time_to_minute(x):
@@ -36,10 +37,15 @@ def index(request):
     return render(request, 'index.html',context=context)
 
 def map(request):
+    template_name = "all_atm_map.html"
+    template_exists = False
+    try:
+        get_template(template_name)
+        template_exists = True
+    except TemplateDoesNotExist:
+        template_exists = False
 
-
-
-    return render(request, 'map.html')
+    return render(request, 'map.html', {'template_exists': template_exists})
 
 def chart(request):
     city_atm_counts = AtmMain.objects.values('city_town__city').annotate(total=Count('city_town')).order_by('-total', 'city_town__city')

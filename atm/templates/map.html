@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div style="height: 900px;overflow: hidden;">
+    {% if template_exists %}
     {% include "all_atm_map.html" %}
+    {% else %}
+    <h4>請通知管理者重整地圖(管理者->重新整理地圖)</h4>
+    {% endif %}
 </div>
 {% endblock %}
