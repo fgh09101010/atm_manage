@@ -449,12 +449,12 @@ def atm_filter(request):
         voice = form.cleaned_data.get('voice')
         #atm = AtmMain.objects.filter(city_town=city_town,use_wheel=use_wheel,voice=voice)
         data=AtmMain.objects.all()
-        if city_town!="":
+        if city_town!="" or city_town!=None:
             data = data.filter(city_town=city_town)
 
-        if use_wheel!="":
+        if use_wheel!="" or use_wheel!=None:
             data = data.filter(use_wheel=use_wheel)
-        if voice!="":
+        if voice!="" or voice!=None:
             
             data = data.filter(voice=voice)
 

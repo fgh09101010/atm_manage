@@ -42,7 +42,7 @@ class FilterForm(forms.Form):
         ('y', 'Yes'),
         ('n', 'No'),
     )
-    city_town = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Select City/Town", required=False)
-    service_time = forms.TimeField(input_formats=['%H:%M'], help_text="Format: 00:00",required=False)
-    use_wheel = forms.ChoiceField(choices=YES_NO_CHOICES, required=False)
-    voice = forms.ChoiceField(choices=YES_NO_CHOICES, required=False)
+    city_town = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Select City/Town", required=False,label="縣市")
+    service_time = forms.TimeField(input_formats=['%H:%M'], help_text="Format: 00:00",required=False,label="期望時間")
+    use_wheel = forms.ChoiceField(choices=YES_NO_CHOICES, required=False,label="支援輪椅")
+    voice = forms.ChoiceField(choices=YES_NO_CHOICES, required=False,label="支援聽障")
