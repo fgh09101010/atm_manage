@@ -13,7 +13,7 @@ from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db import models
-from datetime import datetime, time
+import datetime
 from django.utils import timezone
 from django.utils.timezone import activate
 from django.db.models import Sum
