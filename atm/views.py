@@ -371,7 +371,7 @@ def transaction_chart(request):
         
     return render(request, 'chart_transaction.html', {'data': data})
 
-def customer_detail(request):
+def my_detail(request):
     # 根據用戶名獲取相應的用戶對象
     username=request.user
     user = User.objects.get(username=username)
@@ -393,7 +393,7 @@ def customer_detail(request):
     }
 
     # 渲染模板並返回 HTTP 響應
-    return render(request, 'customer_detail.html', context)
+    return render(request, 'my_detail.html', context)
 
 def atm_map_search(request):
     cities = City.objects.all()
@@ -449,12 +449,12 @@ def atm_filter(request):
         voice = form.cleaned_data.get('voice')
         #atm = AtmMain.objects.filter(city_town=city_town,use_wheel=use_wheel,voice=voice)
         data=AtmMain.objects.all()
-        if city_town!="" or city_town!=None:
+        if city_town!="" :
             data = data.filter(city_town=city_town)
 
-        if use_wheel!="" or use_wheel!=None:
+        if use_wheel!="" :
             data = data.filter(use_wheel=use_wheel)
-        if voice!="" or voice!=None:
+        if voice!="":
             
             data = data.filter(voice=voice)
 
@@ -693,3 +693,11 @@ def result(request):
 
 def rate(request):
     return render(request, 'rate.html')
+
+def customer_list(request):
+    customers = Customer.objects.all()
+    return render(request, 'customer_list.html', {'customers': customers})
+
+def customer_detail(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    return render(request, 'customer_detail.html', {'customer': customer})

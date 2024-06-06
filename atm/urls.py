@@ -27,7 +27,10 @@ urlpatterns = [
     path('transfer/', views.transfer, name='transfer'),
     path('payment/', views.payment, name='payment'),
 
-    path('customer_detail', views.customer_detail, name='customer_detail'),
+    path('customer_list/', views.customer_list, name='customer_list'),
+    path('customer/<int:customer_id>', views.customer_detail, name='customer_detail'),
+
+    path('my_detail/', views.my_detail, name='my_detail'),
 
     path('atm_map_search/', views.atm_map_search, name='atm_map_search'),
 
@@ -37,10 +40,11 @@ urlpatterns = [
     path('exchange-rate/', views.exchange_rate, name='exchange_rate'),
     path('convert/', views.convert_currency, name='convert_currency'),
     path('result/', views.result, name = 'result'),
+    path('invest/', TemplateView.as_view(template_name='invest.html'), name='invest'),
 
 
     path('users/', views.user_list, name='user_list'),
-    path('users/<int:user_id>/', views.user_detail, name='user_detail'),
+    path('users/<str:user_id>/', views.user_detail, name='user_detail'),
 
     path('atm_filter/', views.atm_filter, name='atm_filter'),
 

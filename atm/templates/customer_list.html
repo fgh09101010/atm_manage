@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>使用者清單</h1>
+<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Account Number</th>
+                <th>Balance</th>
+                <th>Join Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td><a href="{% url 'customer_detail' customer_id=customer.id %}">{{ customer.user }}</a></td>
+                <td>{{ customer.account_number }}</td>
+                <td>{{ customer.balance }}</td>
+                <td>{{ customer.join_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

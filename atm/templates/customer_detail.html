@@ -1,35 +1,10 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>{{ username }} 的資訊</h1>
-    <p>餘額：{{ balance }}</p>
 
-    <h2>交易紀錄：</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>時間</th>
-                <th>類型</th>
-                <th>金額</th>
-                <th>來自</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-
-                <tr>
-                    <td>{{ transaction.time }}</td>
-                    <td>{{ transaction.get_type_display }}</td>
-                    {% if transaction.type == "payment" or transaction.type == "withdraw" %}
-                    <td style="color: red;">*{{ transaction.amount }}</td>
-                    {% elif transaction.type == "transfer" and not transaction.destination_account %}
-                    <td style="color: red;">*{{ transaction.amount }}</td>
-                    {% else %}
-                    <td>{{ transaction.amount }}</td>
-                    {% endif %}
-                    <td>{{ transaction.destination_account }}</td>
-                </tr>
-                
-            {% endfor %}
-        </tbody>
-    </table>
+<h1>顧客詳細資訊</h1>
+    <p>用戶名：{{ customer.user }}</p>
+    <p>帳號號碼：{{ customer.account_number }}</p>
+    <p>餘額：{{ customer.balance }}</p>
+    <p>加入時間：{{ customer.join_time }}</p>
 {% endblock %}
