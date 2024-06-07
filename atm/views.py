@@ -11,6 +11,8 @@ from django.db.models import Q
 import os
 from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 from django.db import models
 import datetime
@@ -22,6 +24,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.template.loader import get_template, TemplateDoesNotExist
+from .forms import ContactForm
 # Create your views here.
 
 def time_to_minute(x):
@@ -150,7 +153,7 @@ def restart_map(request):
             folium.Marker(
                 [latitude, longitude],tooltip=ltip,popup=lpop
             ).add_to(marker_cluster)
-        print(latitude)
+        print(atm.id,latitude,longitude)
     # 將地圖渲染為 HTML 字符串
     file_path = os.path.join( "atm","templates","all_atm_map.html")  # 修改为你的 Django 项目文件夹路径
     map_html = m._repr_html_()
@@ -710,3 +713,10 @@ def customer_list(request):
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
     return render(request, 'customer_detail.html', {'customer': customer})
+
+def atm_copy(request):
+    return render(request, 'index_copy.html')
+
+
+
+

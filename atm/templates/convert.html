@@ -5,6 +5,30 @@
         width: 220px;
         height: 30px;
     }
+    form button[type="submit"]{
+        background-color: #4CAF50; /* adjust the button color to your liking */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    form button[type="submit"]:hover {
+        background-color: #3e8e41; /* adjust the hover background color to your liking */
+    }
+    form button[type="button"]{
+        background-color: #4CAF50; /* adjust the button color to your liking */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    form button[type="button"]:hover {
+        background-color: #3e8e41; /* adjust the hover background color to your liking */
+    }
 </style>
 {% load static %}
 
@@ -59,7 +83,7 @@
                 <option value="TRY">TRY</option>
             </select>
         </div>
-        
+        <a href="{%url 'index' %}"><button type = "button">返回</button></a>
         <button type="submit" class="btn btn-primary">Convert</button>
     </form>
 

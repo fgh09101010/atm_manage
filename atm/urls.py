@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.urls import path
 from django.views.generic import TemplateView
@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('atm_map_search/', views.atm_map_search, name='atm_map_search'),
 
-    
+    path('captcha/', include('captcha.urls')),
 
     path('rate/', TemplateView.as_view(template_name='rate.html'), name='rate'),
     path('exchange-rate/', views.exchange_rate, name='exchange_rate'),
@@ -47,6 +47,7 @@ urlpatterns = [
     path('users/<str:user_id>/', views.user_detail, name='user_detail'),
 
     path('atm_filter/', views.atm_filter, name='atm_filter'),
+    path('atm_copy', views.atm_copy, name = "atm_copy")
 
 
 ]

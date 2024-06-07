@@ -24,7 +24,7 @@
         <li class="list-group-item"><p><strong>ATM 安裝於:</strong> {{ atm.atm_install }}</p></li>
     </ul>
     <div class="card-body">
-      <button onclick = "history.back()" class="btn btn-primary" >返回</button>
+      <button class="btn btn-primary" onclick="if (window.history.length > 1) { history.back(); } else { window.close(); }">返回</button>
     </div>
   </div>
 

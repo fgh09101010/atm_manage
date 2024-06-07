@@ -6,12 +6,25 @@
         #map { height: 400px; }
     </style>
 <body>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>ATM 過濾器</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="GET">
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary btn-block">送出</button>
+                        </form>
+                    </div>    
+                </div> 
+            </div> 
+        </div>
+    </div>
 
-    <h1>ATM 過濾器</h1>
-    <form method="GET">
-        {{ form.as_p }}
-        <button type="submit">送出</button>
-    </form>
     {% if atms.data %}
     <h2>利用leaflet.js繪製</h2>
     <div id="map"></div>
@@ -50,10 +63,6 @@
       </table>
 
       
-
-
-
-  
       <script>
           var map = L.map('map').setView([{{ atms.data.0.address.latitude }}, {{ atms.data.0.address.longitude }}], 13);
   

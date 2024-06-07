@@ -44,7 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'atm.apps.AtmConfig',
+    'captcha',
 ]
+
+CAPTCHA_IMAGE_SIZE = (50, 30)  # 设置验证码图片的尺寸 (宽, 高)
+CAPTCHA_FONT_SIZE = 10          # 设置验证码字体的大小
+CAPTCHA_LETTER_ROTATION = (-1, 1)  # 设置验证码字母的旋转角度范围
+CAPTCHA_NOISE_FUNCTIONS = None       # 去除噪点
+CAPTCHA_BACKGROUND_COLOR = '#ffffff' # 背景颜色
+CAPTCHA_FOREGROUND_COLOR = '#000000' # 字体颜色
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
