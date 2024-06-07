@@ -102,7 +102,7 @@ DATABASES = {
 DATABASES = { 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testdb',
+        'NAME': 'atm_data',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost', 

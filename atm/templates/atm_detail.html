@@ -10,6 +10,7 @@
 {% load static %}
 
 <div class="card" style="width: 23rem; margin: 0 auto;">
+    <a href="{% url 'atm_detail_use' pk=atm.pk %}">{{ atm.id }}</a>
     <div class="card-body">
         <h4 class="card-title">ATM詳細資料</h4>
         <p class="card-text"><strong>ATM 名稱:</strong> {{ atm.atm_name }}</p>

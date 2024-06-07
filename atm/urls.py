@@ -22,10 +22,10 @@ urlpatterns = [
     path("restart_map/", views.restart_map, name="restart"),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
-    path('deposit/', views.deposit, name='deposit'),
-    path('withdraw/', views.withdraw, name='withdraw'),
-    path('transfer/', views.transfer, name='transfer'),
-    path('payment/', views.payment, name='payment'),
+    path('deposit/', views.deposit, name='deposit'),#
+    path('withdraw/', views.withdraw, name='withdraw'),#
+    path('transfer/', views.transfer, name='transfer'),#
+    path('payment/', views.payment, name='payment'),#
 
     path('customer_list/', views.customer_list, name='customer_list'),
     path('customer/<int:customer_id>', views.customer_detail, name='customer_detail'),
@@ -47,7 +47,13 @@ urlpatterns = [
     path('users/<str:user_id>/', views.user_detail, name='user_detail'),
 
     path('atm_filter/', views.atm_filter, name='atm_filter'),
-    path('atm_copy', views.atm_copy, name = "atm_copy")
+    path('atm_copy', views.atm_copy, name = "atm_copy"),#
+
+    path('atmdetail/<pk>/use', views.atm_detail_use, name = "atm_detail_use"),
+    path('atmdetail/<pk>/use/deposit/', views.use_deposit, name='use_deposit'),
+    path('atmdetail/<pk>/use/withdraw/', views.use_withdraw, name='use_withdraw'),
+    path('atmdetail/<pk>/use/transfer/', views.use_transfer, name='use_transfer'),
+    path('atmdetail/<pk>/use/payment/', views.use_payment, name='use_payment'),
 
 
 ]

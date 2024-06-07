@@ -205,7 +205,7 @@ def login_view(request):
 
 
 @login_required
-def deposit(request):
+def deposit(request):#
     if request.method == 'POST':
         form = DepositForm(request.POST)
         if form.is_valid():
@@ -224,7 +224,7 @@ def deposit(request):
 
 
 @login_required
-def withdraw(request):
+def withdraw(request):#
     if request.method == 'POST':
         form = WithdrawForm(request.POST)
         if form.is_valid():
@@ -247,7 +247,7 @@ def withdraw(request):
     return render(request, 'withdraw.html', {'form': form})
 
 @login_required
-def transfer(request):
+def transfer(request):#
     if request.method == 'POST':
         form = TransferForm(request.POST)
         if form.is_valid():
@@ -280,7 +280,7 @@ def transfer(request):
     return render(request, 'transfer.html', {'form': form})
 
 @login_required
-def payment(request):
+def payment(request):#
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -717,6 +717,109 @@ def customer_detail(request, customer_id):
 def atm_copy(request):
     return render(request, 'index_copy.html')
 
+def atm_detail_use(request,pk):
+    atm = get_object_or_404(AtmMain, pk=pk)
+    context={
+        "atm":atm
+    }
+    return render(request, 'atm_detail_use.html',context=context)
 
 
+@login_required
+def use_deposit(request,pk):
+    if request.method == 'POST':
+        form = DepositForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            customer = request.user.customer
+            customer.balance += amount
+            customer.save()
 
+            # 创建存款交易记录
+            Transaction.objects.create(customer=customer, amount=amount, type='deposit')
+
+            return redirect('index')  # 存款成功后重定向到主页
+    else:
+        form = DepositForm()
+    return render(request, 'use_deposit.html', {'form': form})
+
+
+@login_required
+def use_withdraw(request):
+    if request.method == 'POST':
+        form = WithdrawForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            customer = request.user.customer
+
+            # 检查用户余额是否足够
+            if amount <= customer.balance:
+                customer.balance -= amount
+                customer.save()
+
+                # 创建取款交易记录
+                Transaction.objects.create(customer=customer, amount=amount, type='withdraw')
+
+                return redirect('index')  # 取款成功后重定向到主页
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = WithdrawForm()
+    return render(request, 'use_withdraw.html', {'form': form})
+
+@login_required
+def use_transfer(request):
+    if request.method == 'POST':
+        form = TransferForm(request.POST)
+        if form.is_valid():
+            source_account = request.user.customer
+            destination_account_number = form.cleaned_data['destination_account_number']
+            destination_account = Customer.objects.get(account_number=destination_account_number)
+            amount = form.cleaned_data['amount']
+
+            # 检查源账户余额是否足够
+            if amount <= source_account.balance:
+                # 更新源账户余额
+                source_account.balance -= amount
+                source_account.save()
+
+                # 更新目标账户余额
+                destination_account.balance += amount
+                destination_account.save()
+
+                # 创建转账交易记录
+                Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
+
+                # 创建另一条转账交易记录，以记录目标账户的收入
+                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
+
+                return redirect('index')  # 转账成功后重定向到主页
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = TransferForm()
+    return render(request, 'use_transfer.html', {'form': form})
+
+@login_required
+def use_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            customer = request.user.customer
+            amount = form.cleaned_data['amount']
+
+
+            if amount <= customer.balance:
+
+                customer.balance -= amount
+                customer.save()
+
+
+                Transaction.objects.create(customer=customer, amount=amount, type='payment')
+
+                return redirect('index')  
+            else:
+                form.add_error('amount', '余额不足')
+    else:
+        form = PaymentForm()
+    return render(request, 'use_payment.html', {'form': form})

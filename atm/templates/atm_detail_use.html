@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% load static %}
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'my_detail'%}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/account.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_4D101EA0873E4FD39BB47646B9264234">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">查看餘額</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'use_transfer' pk=atm.id %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">轉帳</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'use_withdraw' pk=atm.id %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">領錢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'use_deposit' pk=atm.id %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLink__icon">
+                        <img src="{%static 'img/card.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLink__text" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">存錢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
