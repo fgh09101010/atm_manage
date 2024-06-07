@@ -60,13 +60,14 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2>取款</h2>
+                        <h2>存款</h2>
+                        <h4>您正在使用的ATM:{{id}}</h4>
                     </div>
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary btn-block">取款</button>
+                            <button type="submit" class="btn btn-primary btn-block">存款</button>
                         </form>
                     </div>    
                 </div> 

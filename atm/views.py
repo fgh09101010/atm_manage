@@ -25,6 +25,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.template.loader import get_template, TemplateDoesNotExist
 from .forms import ContactForm
+from django.urls import reverse
 # Create your views here.
 
 def time_to_minute(x):
@@ -727,6 +728,7 @@ def atm_detail_use(request,pk):
 
 @login_required
 def use_deposit(request,pk):
+    atm_instance = get_object_or_404(AtmMain, pk=pk)
     if request.method == 'POST':
         form = DepositForm(request.POST)
         if form.is_valid():
@@ -734,18 +736,18 @@ def use_deposit(request,pk):
             customer = request.user.customer
             customer.balance += amount
             customer.save()
+            Transaction.objects.create(customer=customer, amount=amount, type='deposit',atm=atm_instance)
 
-            # 创建存款交易记录
-            Transaction.objects.create(customer=customer, amount=amount, type='deposit')
-
-            return redirect('index')  # 存款成功后重定向到主页
+            return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
     else:
         form = DepositForm()
-    return render(request, 'use_deposit.html', {'form': form})
+    return render(request, 'use_deposit.html', {'form': form,"id":atm_instance})
 
 
 @login_required
-def use_withdraw(request):
+def use_withdraw(request,pk):
+    atm_instance = get_object_or_404(AtmMain, pk=pk)
+    
     if request.method == 'POST':
         form = WithdrawForm(request.POST)
         if form.is_valid():
@@ -758,17 +760,20 @@ def use_withdraw(request):
                 customer.save()
 
                 # 创建取款交易记录
-                Transaction.objects.create(customer=customer, amount=amount, type='withdraw')
+                Transaction.objects.create(customer=customer, amount=amount, type='withdraw',atm=atm_instance)
 
-                return redirect('index')  # 取款成功后重定向到主页
+                return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
+
             else:
-                form.add_error('amount', '余额不足')
+                form.add_error('amount', '餘額不足')
     else:
-        form = WithdrawForm()
-    return render(request, 'use_withdraw.html', {'form': form})
+        balance=request.user.customer.balance
+        form = WithdrawForm(initial={'balance': balance})
+    return render(request, 'use_withdraw.html', {'form': form,"id":atm_instance})
 
 @login_required
-def use_transfer(request):
+def use_transfer(request,pk):
+    atm_instance = get_object_or_404(AtmMain, pk=pk)
     if request.method == 'POST':
         form = TransferForm(request.POST)
         if form.is_valid():
@@ -791,17 +796,19 @@ def use_transfer(request):
                 Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
 
                 # 创建另一条转账交易记录，以记录目标账户的收入
-                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
+                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account,atm=atm_instance)
 
-                return redirect('index')  # 转账成功后重定向到主页
+                return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
             else:
-                form.add_error('amount', '余额不足')
+                form.add_error('amount', '餘額不足')
     else:
-        form = TransferForm()
-    return render(request, 'use_transfer.html', {'form': form})
+        balance=request.user.customer.balance
+        form = TransferForm(initial={'balance': balance})
+    return render(request, 'use_transfer.html', {'form': form,"id":atm_instance})
 
 @login_required
-def use_payment(request):
+def use_payment(request,pk):
+    atm_instance = get_object_or_404(AtmMain, pk=pk)
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -815,11 +822,12 @@ def use_payment(request):
                 customer.save()
 
 
-                Transaction.objects.create(customer=customer, amount=amount, type='payment')
+                Transaction.objects.create(customer=customer, amount=amount, type='payment',atm=atm_instance)
 
-                return redirect('index')  
+                return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
             else:
-                form.add_error('amount', '余额不足')
+                form.add_error('amount', '餘額不足')
     else:
-        form = PaymentForm()
-    return render(request, 'use_payment.html', {'form': form})
+        balance=request.user.customer.balance
+        form = PaymentForm(initial={'balance': balance})
+    return render(request, 'use_payment.html', {'form': form,"id":atm_instance})
