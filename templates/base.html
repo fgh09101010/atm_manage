@@ -43,7 +43,6 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'atm_filter' %}">ATM條件篩選</a>
             </li>
-            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 圖表
@@ -61,10 +60,6 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'register' %}">註冊</a></li>
                 <li><a class="dropdown-item" href="{% url 'login' %}">登錄</a></li>
-                <li><a class="dropdown-item" href="{% url 'deposit' %}">存錢</a></li>
-                <li><a class="dropdown-item" href="{% url 'withdraw' %}">領錢</a></li>
-                <li><a class="dropdown-item" href="{% url 'transfer' %}">轉帳</a></li>
-                <li><a class="dropdown-item" href="{% url 'payment' %}">支付</a></li>
                 <li><a class="dropdown-item" href="{% url 'my_detail'%}">查看餘額</a></li>
               </ul>
             </li>
@@ -77,6 +72,24 @@
                 <li><a class="dropdown-item" href="{% url 'customer_list' %}">使用者 資料管理</a></li>
               </ul>
             </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'my_detail'%}">查看帳戶餘額</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout'%}">登出</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">當前使用者:{{user.get_username}} {{user.customer}}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">註冊</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">登錄</a>
+            </li>
+            {% endif %}
           </ul>
           <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

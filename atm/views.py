@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 import os
 from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render, redirect
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
@@ -204,6 +204,10 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
+def logout_view(request):
+    logout(request)
+    # 可选：跳转到登出后的页面，比如重定向到登录页面
+    return redirect('index')
 
 @login_required
 def deposit(request):#

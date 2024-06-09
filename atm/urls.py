@@ -22,6 +22,7 @@ urlpatterns = [
     path("restart_map/", views.restart_map, name="restart"),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
     path('deposit/', views.deposit, name='deposit'),#
     path('withdraw/', views.withdraw, name='withdraw'),#
     path('transfer/', views.transfer, name='transfer'),#
