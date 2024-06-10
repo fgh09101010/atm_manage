@@ -59,13 +59,15 @@
                 ATM功能
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'register' %}">註冊</a></li>
-                <li><a class="dropdown-item" href="{% url 'login' %}">登錄</a></li>
+                {% if user.is_authenticated %}
                 <li><a class="dropdown-item" href="{% url 'deposit' %}">存錢</a></li>
                 <li><a class="dropdown-item" href="{% url 'withdraw' %}">領錢</a></li>
                 <li><a class="dropdown-item" href="{% url 'transfer' %}">轉帳</a></li>
                 <li><a class="dropdown-item" href="{% url 'payment' %}">支付</a></li>
                 <li><a class="dropdown-item" href="{% url 'my_detail'%}">查看餘額</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">請先登入</a></li>
+              {% endif %}
               </ul>
             </li>
             <li class="nav-item dropdown">

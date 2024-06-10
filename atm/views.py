@@ -9,7 +9,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 import os
-from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm
+from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm,CaptchForm
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render, redirect
 from .forms import LoginForm
@@ -191,6 +191,8 @@ def register(request):
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        captch= CaptchForm(request.POST)
+
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -202,7 +204,8 @@ def login_view(request):
                 form.add_error(None, '用户名或密码不正确')
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+        captch= CaptchForm()
+    return render(request, 'login.html', {'form': form,'captch': captch})
 
 def logout_view(request):
     logout(request)

@@ -52,8 +52,36 @@
                     </div>
                 </a>
             </div>
+        </div>      
+    </div>
+    <h2>無聊做的其他功能</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'rate' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLinkicon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLinktext" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">匯率查詢</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a href="{% url 'convert_currency' %}" rel="noreferrer noopener" data-ga-quick-link="-" class="cubre-m-quickLink" id="lnk_Link">
+                    <div class="cubre-m-quickLinkicon">
+                        <img src="{%static 'img/exchange.svg'%}" class="cubre-m-quickLink__img" alt="" id="img_C348B7E06EDC4C3788CCAD0CEB9F28ED">
+                    </div>
+                    <div class="cubre-m-quickLinktext" data-ga-quick-link-text="">
+                        <span class="exchange-rate-text">匯率轉換</span>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
+    
 </div>
 
 {% endblock %}

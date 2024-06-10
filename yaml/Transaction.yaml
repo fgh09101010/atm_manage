@@ -4,69 +4,141 @@
     customer: 8
     time: 2024-06-04 03:57:51.328689+00:00
     amount: '100.00'
+    atm: 1
     type: deposit
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 32
   fields:
     customer: 8
     time: 2024-06-04 03:57:54.598276+00:00
     amount: '10.00'
+    atm: 1
     type: withdraw
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 33
   fields:
     customer: 8
     time: 2024-06-04 03:57:57.926320+00:00
     amount: '1000.00'
+    atm: 1
     type: transfer
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 35
   fields:
     customer: 8
     time: 2024-06-04 03:58:00.748764+00:00
     amount: '100.00'
+    atm: 1
     type: payment
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 36
   fields:
     customer: 8
     time: 2024-06-04 03:58:20.811984+00:00
     amount: '100.00'
+    atm: 1
     type: transfer
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 37
   fields:
     customer: 5
     time: 2024-06-04 03:58:20.813082+00:00
     amount: '100.00'
+    atm: 1
     type: transfer
     destination_account: 8
-    atm_id: 1
 - model: atm.transaction
   pk: 38
   fields:
     customer: 5
     time: 2024-06-04 03:59:01.600285+00:00
     amount: '100.00'
+    atm: 1
     type: transfer
     destination_account: null
-    atm_id: 1
 - model: atm.transaction
   pk: 39
   fields:
     customer: 8
     time: 2024-06-04 03:59:01.601287+00:00
     amount: '100.00'
+    atm: 1
     type: transfer
     destination_account: 5
-    atm_id: 1
+- model: atm.transaction
+  pk: 41
+  fields:
+    customer: 8
+    time: 2024-06-07 06:54:44.320597+00:00
+    amount: '20.00'
+    atm: 1
+    type: deposit
+    destination_account: null
+- model: atm.transaction
+  pk: 42
+  fields:
+    customer: 8
+    time: 2024-06-07 06:55:44.810596+00:00
+    amount: '30.00'
+    atm: 3
+    type: deposit
+    destination_account: null
+- model: atm.transaction
+  pk: 43
+  fields:
+    customer: 8
+    time: 2024-06-07 07:01:06.138433+00:00
+    amount: '50.00'
+    atm: 1
+    type: deposit
+    destination_account: null
+- model: atm.transaction
+  pk: 44
+  fields:
+    customer: 8
+    time: 2024-06-07 07:05:26.970203+00:00
+    amount: '100.00'
+    atm: 1
+    type: withdraw
+    destination_account: null
+- model: atm.transaction
+  pk: 45
+  fields:
+    customer: 8
+    time: 2024-06-07 07:05:42.375321+00:00
+    amount: '30.00'
+    atm: null
+    type: transfer
+    destination_account: null
+- model: atm.transaction
+  pk: 46
+  fields:
+    customer: 7
+    time: 2024-06-07 07:05:42.375321+00:00
+    amount: '30.00'
+    atm: 1
+    type: transfer
+    destination_account: 8
+- model: atm.transaction
+  pk: 47
+  fields:
+    customer: 8
+    time: 2024-06-07 07:05:48.192226+00:00
+    amount: '30.00'
+    atm: null
+    type: transfer
+    destination_account: null
+- model: atm.transaction
+  pk: 48
+  fields:
+    customer: 5
+    time: 2024-06-07 07:05:48.192226+00:00
+    amount: '30.00'
+    atm: 1
+    type: transfer
+    destination_account: 8

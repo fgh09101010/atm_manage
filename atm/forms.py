@@ -4,15 +4,22 @@ from .models import City
 from captcha.fields import CaptchaField
 
 
+
 class RegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput,label="　　密碼")
+    confirm_password = forms.CharField(widget=forms.PasswordInput,label="確認密碼")
 
     class Meta:
         model = User
         fields = ['username', 'password']
+        labels = {
+            'username': '用戶名稱',
+        }
         help_texts = {
             'username': "",
+        }
+        widgets = {
+            'username': forms.TextInput,
         }
 
     def clean_confirm_password(self):
@@ -24,21 +31,21 @@ class RegisterForm(forms.ModelForm):
     
 class LoginForm(forms.Form):
     username = forms.CharField(
-        label='用户名',
+        label='用戶名稱',
         max_length=100,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': '输入用户名'
         })
     )
     password = forms.CharField(
-        label='密码',
+        label='　　密碼',
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '输入密码'
         })
     )
-    captcha = CaptchaField(label='验证码')
+    
+class CaptchForm(forms.Form):
+    captcha = CaptchaField(label='驗證碼')
 
 class DepositForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='存款金額')

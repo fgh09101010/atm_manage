@@ -3,7 +3,7 @@
   fields:
     user: 3
     account_number: 000-002
-    balance: '2280.00'
+    balance: '12310.02'
     join_time: 2024-06-03 18:51:10+00:00
 - model: atm.customer
   pk: 6
@@ -17,14 +17,14 @@
   fields:
     user: 7
     account_number: 000-004
-    balance: '0.00'
+    balance: '30.00'
     join_time: 2024-06-04 02:15:55+00:00
 - model: atm.customer
   pk: 8
   fields:
     user: 1
     account_number: 000-001
-    balance: '9999995069.00'
+    balance: '9999995039.00'
     join_time: 2024-06-03 02:16:05+00:00
 - model: atm.customer
   pk: 9
@@ -47,3 +47,10 @@
     account_number: 000-007
     balance: '0.00'
     join_time: 2024-06-04 02:16:11+00:00
+- model: atm.customer
+  pk: 14
+  fields:
+    user: 13
+    account_number: 000-25367e
+    balance: '0.00'
+    join_time: 2024-06-09 04:53:36.813782+00:00
