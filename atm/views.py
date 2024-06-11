@@ -102,6 +102,7 @@ class AddressDetailView(generic.DetailView):
         address = self.get_object()
         atm_main_instance = AtmMain.objects.filter(address=address).first()
         context['atm_count'] = AtmMain.objects.filter(address=address).count()
+        context['atm_list'] = AtmMain.objects.filter(address=address)
         context['city_town'] = atm_main_instance.city_town if atm_main_instance else "Unknown"
         context['id'] = address.address_id 
         return context
@@ -172,19 +173,21 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         captch= CaptchForm(request.POST)
-
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user  != "":
-                login(request, user)
-                next_url = request.POST.get('next', '')
-                if next_url=="":
-                    next_url="index"
-                return redirect(next_url)
-            else:
-                form.add_error(None, '用户名或密码不正确')
+        if captch.is_valid():         
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    next_url = request.POST.get('next', '')
+                    if next_url=="":
+                        next_url="index"
+                    return redirect(next_url)
+                else:
+                    form.add_error(None, '用戶或密碼不正確')
+        else:
+            form.add_error(None, '驗證碼錯誤')
     else:
         form = LoginForm()
         captch= CaptchForm()
@@ -193,95 +196,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect(request.META.get('HTTP_REFERER', 'index'))
-
-@login_required
-def deposit(request):#
-    if request.method == 'POST':
-        form = DepositForm(request.POST)
-        if form.is_valid():
-            amount = form.cleaned_data['amount']
-            customer = request.user.customer
-            customer.balance += amount
-            customer.save()
-
-            Transaction.objects.create(customer=customer, amount=amount, type='deposit')
-
-            return redirect('index') 
-    else:
-        form = DepositForm()
-    return render(request, 'deposit.html', {'form': form})
-
-
-@login_required
-def withdraw(request):#
-    if request.method == 'POST':
-        form = WithdrawForm(request.POST)
-        if form.is_valid():
-            amount = form.cleaned_data['amount']
-            customer = request.user.customer
-
-            if amount <= customer.balance:
-                customer.balance -= amount
-                customer.save()
-
-                Transaction.objects.create(customer=customer, amount=amount, type='withdraw')
-
-                return redirect('index') 
-            else:
-                form.add_error('amount', '余额不足')
-    else:
-        form = WithdrawForm()
-    return render(request, 'withdraw.html', {'form': form})
-
-@login_required
-def transfer(request):#
-    if request.method == 'POST':
-        form = TransferForm(request.POST)
-        if form.is_valid():
-            source_account = request.user.customer
-            destination_account_number = form.cleaned_data['destination_account_number']
-            destination_account = Customer.objects.get(account_number=destination_account_number)
-            amount = form.cleaned_data['amount']
-
-            if amount <= source_account.balance:
-                source_account.balance -= amount
-                source_account.save()
-                destination_account.balance += amount
-                destination_account.save()
-
-                Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
-                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
-
-                return redirect('index') 
-            else:
-                form.add_error('amount', '余额不足')
-    else:
-        form = TransferForm()
-    return render(request, 'transfer.html', {'form': form})
-
-@login_required
-def payment(request):#
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            customer = request.user.customer
-            amount = form.cleaned_data['amount']
-
-
-            if amount <= customer.balance:
-
-                customer.balance -= amount
-                customer.save()
-
-
-                Transaction.objects.create(customer=customer, amount=amount, type='payment')
-
-                return redirect('index')  
-            else:
-                form.add_error('amount', '余额不足')
-    else:
-        form = PaymentForm()
-    return render(request, 'payment.html', {'form': form})
 
 def registration_trend(request):
 
@@ -361,22 +275,16 @@ def transaction_chart(request):
 
 @login_required
 def my_detail(request):
-
     username=request.user
     user = User.objects.get(username=username)
-
     customer = Customer.objects.get(user=user)
-
     balance = customer.balance
-
     transactions = Transaction.objects.filter(customer=customer).order_by('-time')
-
     context = {
         'username': username,
         'balance': balance,
         'transactions': transactions,
     }
-
     return render(request, 'my_detail.html', context)
 
 def atm_map_search(request):
@@ -424,8 +332,6 @@ def user_detail(request, user_id):
 def atm_filter(request):
     form = FilterForm(request.GET or None)
     atms = None
-
-    
     if request.GET and form.is_valid():
         city_town = form.cleaned_data.get('city_town')
         service_time = form.cleaned_data.get('service_time')
@@ -433,14 +339,11 @@ def atm_filter(request):
         voice = form.cleaned_data.get('voice')
         data=AtmMain.objects.all()
         if city_town is not None:
-            data = data.filter(city_town=city_town)
-        
+            data = data.filter(city_town=city_town)    
         if use_wheel  != "":
             data = data.filter(use_wheel=use_wheel)
-        if voice  != "":
-            
-            data = data.filter(voice=voice)
-        
+        if voice  != "": 
+            data = data.filter(voice=voice) 
         if service_time  != "":
             business_atms = []
             hope_time=time_to_minute(str(service_time))
@@ -463,14 +366,8 @@ def atm_filter(request):
             'voice': voice,
             'data':data,
             'atm_count':atm_count,
-        }
-        
+        }  
     return render(request, 'atm_filter.html', {'form': form, 'atms': atms})
-
-def atm_filter_map(request):
-    data = request.GET.get('data', None)
-
-    return render(request, 'atm_filter_map.html', {'data': data})
 
 EXCHANGE_RATES = {
     'TW':{
@@ -684,6 +581,7 @@ def rate(request):
 def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'customer_list.html', {'customers': customers})
+
 @staff_member_required
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
@@ -710,10 +608,10 @@ def use_deposit(request,pk):
             customer.balance += amount
             customer.save()
             Transaction.objects.create(customer=customer, amount=amount, type='deposit',atm=atm_instance)
-
             return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
     else:
-        form = DepositForm()
+        balance=request.user.customer.balance
+        form = DepositForm(initial={'balance': balance})
     return render(request, 'use_deposit.html', {'form': form,"id":atm_instance})
 
 
@@ -726,15 +624,11 @@ def use_withdraw(request,pk):
         if form.is_valid():
             amount = form.cleaned_data['amount']
             customer = request.user.customer
-
             if amount <= customer.balance:
                 customer.balance -= amount
                 customer.save()
-
                 Transaction.objects.create(customer=customer, amount=amount, type='withdraw',atm=atm_instance)
-
                 return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
-
             else:
                 form.add_error('amount', '餘額不足')
     else:
@@ -752,18 +646,13 @@ def use_transfer(request,pk):
             destination_account_number = form.cleaned_data['destination_account_number']
             destination_account = Customer.objects.get(account_number=destination_account_number)
             amount = form.cleaned_data['amount']
-
             if amount <= source_account.balance:
                 source_account.balance -= amount
                 source_account.save()
-
                 destination_account.balance += amount
                 destination_account.save()
-
                 Transaction.objects.create(customer=source_account, amount=amount, type='transfer',atm=atm_instance)
-
                 Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
-
                 return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
             else:
                 form.add_error('amount', '餘額不足')
@@ -772,32 +661,6 @@ def use_transfer(request,pk):
         form = TransferForm(initial={'balance': balance})
     return render(request, 'use_transfer.html', {'form': form,"id":atm_instance})
 
-@login_required
-def use_payment(request,pk):
-    
-    atm_instance = get_object_or_404(AtmMain, pk=pk)
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            customer = request.user.customer
-            amount = form.cleaned_data['amount']
-
-
-            if amount <= customer.balance:
-
-                customer.balance -= amount
-                customer.save()
-
-
-                Transaction.objects.create(customer=customer, amount=amount, type='payment',atm=atm_instance)
-
-                return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
-            else:
-                form.add_error('amount', '餘額不足')
-    else:
-        balance=request.user.customer.balance
-        form = PaymentForm(initial={'balance': balance})
-    return render(request, 'use_payment.html', {'form': form,"id":atm_instance})
 
 def use_atm_chart(request):
 

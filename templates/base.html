@@ -63,22 +63,6 @@
               </ul>
               
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                ATM功能
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url 'deposit' %}">存錢</a></li>
-                <li><a class="dropdown-item" href="{% url 'withdraw' %}">領錢</a></li>
-                <li><a class="dropdown-item" href="{% url 'transfer' %}">轉帳</a></li>
-                <li><a class="dropdown-item" href="{% url 'payment' %}">支付</a></li>
-                <li><a class="dropdown-item" href="{% url 'my_detail'%}">查看餘額</a></li>
-              {% else %}
-                <li><a class="dropdown-item" href="{% url 'login' %}">請先登入</a></li>
-              {% endif %}
-              </ul>
-            </li>
             {% if user.is_superuser %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,11 +76,11 @@
             {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="#">當前使用者:{{user.get_username}}</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="{% url 'my_detail'%}">查看帳戶餘額</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">當前使用者:{{user.get_username}}</a>
+            </li>         
             <form class="d-flex">
               <a href="{% url 'logout' %}"><button class="btn btn-outline-success" type="button">登出</button></a>
             </form>

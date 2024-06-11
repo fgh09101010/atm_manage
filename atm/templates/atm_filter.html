@@ -65,17 +65,14 @@
       
       <script>
           var map = L.map('map').setView([{{ atms.data.0.address.latitude }}, {{ atms.data.0.address.longitude }}], 13);
-  
-          // Add the base tile layer from OpenStreetMap
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 19,
               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           }).addTo(map);
   
-          // Loop through your ATM data and add markers to the map
           {% for atm in atms.data %}
               L.marker([{{ atm.address.latitude }}, {{ atm.address.longitude }}]).addTo(map)
-                  .bindPopup('{{ atm.city_town }}{{ atm.address }}');
+                  .bindPopup('<a href="/atm/atmdetail/{{ atm.id }}/" target="_blank">More Details</a>');
           {% endfor %}
       </script>
 </body>

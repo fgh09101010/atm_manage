@@ -22,10 +22,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('deposit/', views.deposit, name='deposit'),#
-    path('withdraw/', views.withdraw, name='withdraw'),#
-    path('transfer/', views.transfer, name='transfer'),#
-    path('payment/', views.payment, name='payment'),#
 
     path('customer_list/', views.customer_list, name='customer_list'),
     path('customer/<int:customer_id>', views.customer_detail, name='customer_detail'),
@@ -40,7 +36,6 @@ urlpatterns = [
     path('exchange-rate/', views.exchange_rate, name='exchange_rate'),
     path('convert/', views.convert_currency, name='convert_currency'),
     path('result/', views.result, name = 'result'),
-    path('invest/', TemplateView.as_view(template_name='invest.html'), name='invest'),
 
 
     path('users/', views.user_list, name='user_list'),
@@ -52,7 +47,6 @@ urlpatterns = [
     path('atmdetail/<pk>/use/deposit/', views.use_deposit, name='use_deposit'),
     path('atmdetail/<pk>/use/withdraw/', views.use_withdraw, name='use_withdraw'),
     path('atmdetail/<pk>/use/transfer/', views.use_transfer, name='use_transfer'),
-    path('atmdetail/<pk>/use/payment/', views.use_payment, name='use_payment'),
 
 
 ]

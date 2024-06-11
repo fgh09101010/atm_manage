@@ -49,6 +49,7 @@ class CaptchForm(forms.Form):
 
 class DepositForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='存款金額')
+    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', required=False,disabled=True)
 
 class WithdrawForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='取款金額')
