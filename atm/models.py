@@ -1,10 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.contrib import auth
+from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-import uuid
 from django.urls import reverse
+import uuid
+
 
 
 class AtmAddress(models.Model):
@@ -15,7 +15,6 @@ class AtmAddress(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True,verbose_name="緯度")
 
     class Meta:
-        #managed = False
         db_table = 'atm_address'
         verbose_name_plural = "地址"
 

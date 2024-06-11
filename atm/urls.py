@@ -3,8 +3,6 @@ from . import views
 from django.urls import path
 from django.views.generic import TemplateView
 
-#app_name = 'atm'
-
 urlpatterns = [
     path('', views.index, name='index'),
     path('map/', views.map, name='map'),
@@ -49,7 +47,6 @@ urlpatterns = [
     path('users/<str:user_id>/', views.user_detail, name='user_detail'),
 
     path('atm_filter/', views.atm_filter, name='atm_filter'),
-    path('atm_copy', views.atm_copy, name = "atm_copy"),#
 
     path('atmdetail/<pk>/use', views.atm_detail_use, name = "atm_detail_use"),
     path('atmdetail/<pk>/use/deposit/', views.use_deposit, name='use_deposit'),

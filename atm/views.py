@@ -1,33 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import AtmAddress,AtmMain,City,Customer,Transaction
+from .models import AtmAddress, AtmMain, City, Customer, Transaction
 import random
-from django.db.models import Count, functions
+from django.db.models import Count
 import folium
 from folium.plugins import MarkerCluster
-from django.core.cache import cache
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 import os
 from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm,CaptchForm
-from django.contrib.auth import authenticate, login,logout
-from django.shortcuts import render, redirect
-
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db import models
 import datetime
 from django.utils import timezone
-from django.utils.timezone import activate
 from django.db.models import Sum
 from django.contrib.auth.models import User
-from django.http import JsonResponse
-from django.http import HttpResponse
-from django.core.paginator import Paginator
 from django.template.loader import get_template, TemplateDoesNotExist
-from .forms import ContactForm
 from django.urls import reverse
 from django.contrib.admin.views.decorators import staff_member_required
-# Create your views here.
+
 
 def time_to_minute(x):
     x=x.split(":")
@@ -55,7 +45,6 @@ def map(request):
 def chart(request):
     city_atm_counts = AtmMain.objects.values('city_town__city').annotate(total=Count('city_town')).order_by('-total', 'city_town__city')
 
-    # 分離標籤和數據
     labels = [item['city_town__city'] for item in city_atm_counts]
     values = [item['total'] for item in city_atm_counts]
 
@@ -63,7 +52,6 @@ def chart(request):
     background_colors = [ _+", 0.2)" for _ in colors]
     border_colors = [ _+", 1.0)" for _ in colors]
 
-    # 將圖表數據儲存到緩存中，有效期可以自行設置
     chart_data = {
         'labels': labels,
         'values': values,
@@ -115,17 +103,17 @@ class AddressDetailView(generic.DetailView):
         atm_main_instance = AtmMain.objects.filter(address=address).first()
         context['atm_count'] = AtmMain.objects.filter(address=address).count()
         context['city_town'] = atm_main_instance.city_town if atm_main_instance else "Unknown"
-        context['id'] = address.address_id  # 使用 address_id 而不是 id
+        context['id'] = address.address_id 
         return context
 
 class CityDetailView(generic.DetailView):
-    model = City  # 將 model 設置為 City
+    model = City  
     template_name = 'city_detail.html'
     context_object_name = 'city'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        city = self.get_object()  # 獲取城市對象
+        city = self.get_object() 
         atm_count = AtmMain.objects.filter(city_town=city).count()
         context["city"]=city
         context['atm_count'] = atm_count
@@ -137,34 +125,26 @@ class CityDetailView(generic.DetailView):
 def restart_map(request):
 
 
-    m = folium.Map(location=[25.0330, 121.5654], zoom_start=12)  # Taipei 的中心經緯度
+    m = folium.Map(location=[25.0330, 121.5654], zoom_start=12)  
     marker_cluster = MarkerCluster(name="marker").add_to(m)
 
-    # 從資料庫中提取所有 ATM 地址數據
     atm_main = AtmMain.objects.all()
 
-    # 將每個 ATM 的地址經緯度添加到地圖上
     for atm in atm_main:
         latitude = atm.address.latitude
         longitude = atm.address.longitude
         ltip = atm.atm_name
         lpop=f'<a href="/atm/atmdetail/{atm.id}/" target = "_blank">More Details</a>'
-        #lpop = f'<a href="http://127.0.0.1:8000/atm/atmdetail/{atm.id}/">http://127.0.0.1:8000/atm/atmdetail/</a>'
-        #lpop = "<a href='http://127.0.0.1:8000/atm/atmdetail/1'>123</a>"
-        if latitude and longitude:  # 確保經緯度不為空
+        if latitude and longitude:  
             folium.Marker(
                 [latitude, longitude],tooltip=ltip,popup=lpop
             ).add_to(marker_cluster)
         print(atm.id,latitude,longitude)
-    # 將地圖渲染為 HTML 字符串
-    file_path = os.path.join( "atm","templates","all_atm_map.html")  # 修改为你的 Django 项目文件夹路径
+    file_path = os.path.join( "atm","templates","all_atm_map.html")  
     map_html = m._repr_html_()
-    #m.save(file_path)
+
     with open(file_path,"w",encoding="UTF-8") as data:
         data.write(map_html)
-    
-
-
 
     context = {'map': "地圖重整成功"}
 
@@ -179,7 +159,6 @@ def register(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
 
-            # 创建并关联 Customer 实例
             Customer.objects.create(user=user)
 
             login(request, user)
@@ -225,10 +204,9 @@ def deposit(request):#
             customer.balance += amount
             customer.save()
 
-            # 创建存款交易记录
             Transaction.objects.create(customer=customer, amount=amount, type='deposit')
 
-            return redirect('index')  # 存款成功后重定向到主页
+            return redirect('index') 
     else:
         form = DepositForm()
     return render(request, 'deposit.html', {'form': form})
@@ -242,15 +220,13 @@ def withdraw(request):#
             amount = form.cleaned_data['amount']
             customer = request.user.customer
 
-            # 检查用户余额是否足够
             if amount <= customer.balance:
                 customer.balance -= amount
                 customer.save()
 
-                # 创建取款交易记录
                 Transaction.objects.create(customer=customer, amount=amount, type='withdraw')
 
-                return redirect('index')  # 取款成功后重定向到主页
+                return redirect('index') 
             else:
                 form.add_error('amount', '余额不足')
     else:
@@ -267,23 +243,16 @@ def transfer(request):#
             destination_account = Customer.objects.get(account_number=destination_account_number)
             amount = form.cleaned_data['amount']
 
-            # 检查源账户余额是否足够
             if amount <= source_account.balance:
-                # 更新源账户余额
                 source_account.balance -= amount
                 source_account.save()
-
-                # 更新目标账户余额
                 destination_account.balance += amount
                 destination_account.save()
 
-                # 创建转账交易记录
                 Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
-
-                # 创建另一条转账交易记录，以记录目标账户的收入
                 Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
 
-                return redirect('index')  # 转账成功后重定向到主页
+                return redirect('index') 
             else:
                 form.add_error('amount', '余额不足')
     else:
@@ -315,7 +284,6 @@ def payment(request):#
     return render(request, 'payment.html', {'form': form})
 
 def registration_trend(request):
-    #activate('Asia/Taipei')
 
     today = timezone.localtime(timezone.now()).date()
 
@@ -393,27 +361,22 @@ def transaction_chart(request):
 
 @login_required
 def my_detail(request):
-    # 根據用戶名獲取相應的用戶對象
+
     username=request.user
     user = User.objects.get(username=username)
 
-    # 通過用戶對象獲取相應的客戶對象
     customer = Customer.objects.get(user=user)
 
-    # 獲取客戶的餘額
     balance = customer.balance
 
-    # 獲取客戶的所有交易記錄
     transactions = Transaction.objects.filter(customer=customer).order_by('-time')
 
-    # 將用戶名、餘額和交易記錄傳遞到模板中
     context = {
         'username': username,
         'balance': balance,
         'transactions': transactions,
     }
 
-    # 渲染模板並返回 HTTP 響應
     return render(request, 'my_detail.html', context)
 
 def atm_map_search(request):
@@ -468,7 +431,6 @@ def atm_filter(request):
         service_time = form.cleaned_data.get('service_time')
         use_wheel = form.cleaned_data.get('use_wheel')
         voice = form.cleaned_data.get('voice')
-        #atm = AtmMain.objects.filter(city_town=city_town,use_wheel=use_wheel,voice=voice)
         data=AtmMain.objects.all()
         if city_town is not None:
             data = data.filter(city_town=city_town)
@@ -727,8 +689,7 @@ def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
     return render(request, 'customer_detail.html', {'customer': customer})
 
-def atm_copy(request):
-    return render(request, 'index_copy.html')
+
 
 def atm_detail_use(request,pk):
     atm = get_object_or_404(AtmMain, pk=pk)
@@ -766,12 +727,10 @@ def use_withdraw(request,pk):
             amount = form.cleaned_data['amount']
             customer = request.user.customer
 
-            # 检查用户余额是否足够
             if amount <= customer.balance:
                 customer.balance -= amount
                 customer.save()
 
-                # 创建取款交易记录
                 Transaction.objects.create(customer=customer, amount=amount, type='withdraw',atm=atm_instance)
 
                 return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
@@ -794,20 +753,15 @@ def use_transfer(request,pk):
             destination_account = Customer.objects.get(account_number=destination_account_number)
             amount = form.cleaned_data['amount']
 
-            # 检查源账户余额是否足够
             if amount <= source_account.balance:
-                # 更新源账户余额
                 source_account.balance -= amount
                 source_account.save()
 
-                # 更新目标账户余额
                 destination_account.balance += amount
                 destination_account.save()
 
-                # 创建转账交易记录
                 Transaction.objects.create(customer=source_account, amount=amount, type='transfer',atm=atm_instance)
 
-                # 创建另一条转账交易记录，以记录目标账户的收入
                 Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
 
                 return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
