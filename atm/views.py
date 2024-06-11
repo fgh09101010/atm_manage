@@ -26,6 +26,7 @@ from django.core.paginator import Paginator
 from django.template.loader import get_template, TemplateDoesNotExist
 from .forms import ContactForm
 from django.urls import reverse
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 
 def time_to_minute(x):
@@ -132,7 +133,7 @@ class CityDetailView(generic.DetailView):
 
         return context
     
-
+@staff_member_required
 def restart_map(request):
 
 
@@ -199,7 +200,8 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user  != "":
                 login(request, user)
-                return redirect('index') 
+                next_url = request.POST.get('next', '/')
+                return redirect(next_url)
             else:
                 form.add_error(None, '用户名或密码不正确')
     else:
@@ -209,8 +211,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    # 可选：跳转到登出后的页面，比如重定向到登录页面
-    return redirect('index')
+    return redirect(request.META.get('HTTP_REFERER', 'index'))
 
 @login_required
 def deposit(request):#
@@ -388,6 +389,7 @@ def transaction_chart(request):
         
     return render(request, 'chart_transaction.html', {'data': data})
 
+@login_required
 def my_detail(request):
     # 根據用戶名獲取相應的用戶對象
     username=request.user
@@ -714,10 +716,11 @@ def result(request):
 def rate(request):
     return render(request, 'rate.html')
 
+@staff_member_required
 def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'customer_list.html', {'customers': customers})
-
+@staff_member_required
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
     return render(request, 'customer_detail.html', {'customer': customer})

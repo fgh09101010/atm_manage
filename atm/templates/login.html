@@ -68,6 +68,7 @@ img {
                 </div>
                 <div class="card-body">
                     <form method="post">
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
                         {% csrf_token %}
                         {{ form.as_p }}
                         {{ captch.captcha }}

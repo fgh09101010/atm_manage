@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>atm總數:{{atm_count}}</h2>
-<canvas id="myChart" width="400" height="200"></canvas>
+<div style="display: flex; justify-content: center; align-items: center; height: 500px;">
+    <canvas id="registrationChart" ></canvas>
+</div>
     <script>
         var labels = {{ labels|safe }};
         var values = {{ values|safe }};
         var backgroundColors = {{ background_colors|safe }};
         var borderColors = {{ border_colors|safe }};
 
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx = document.getElementById('registrationChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {

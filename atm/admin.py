@@ -8,10 +8,12 @@ class AtmAddressAdmin(admin.ModelAdmin):
 @admin.register(AtmMain)
 class AtmMainAdmin(admin.ModelAdmin):
     list_display = ("address", "city_town", "atm_code", "atm_name", "type", "category", "atm_install", "phone", "service_type", "use_wheel", "voice")
+    list_filter =("use_wheel", "voice")
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
     list_display =("city_town_id", "city", "town", "population", "area", "density")
+    list_filter = ("city",)
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -20,3 +22,4 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ['customer', 'time', 'amount', 'type',  'destination_account','atm']
+    list_filter = ("type",)
