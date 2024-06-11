@@ -838,3 +838,109 @@ def use_payment(request,pk):
         balance=request.user.customer.balance
         form = PaymentForm(initial={'balance': balance})
     return render(request, 'use_payment.html', {'form': form,"id":atm_instance})
+
+def use_atm_chart(request):
+
+    bank=dict()
+    
+    a='''一銀
+        中信
+        元大
+        兆豐
+        台新
+        合庫
+        國世
+        土銀
+        彰銀
+        永豐
+        玉山
+        臺企
+        臺銀
+        華銀'''
+    for i in a.replace(" ","").split("\n"):
+        bank[i]=0
+    bank["郵局"]=0
+    
+    total=0
+    for obj in Transaction.objects.all():
+        b=obj.get_atm_name()[:2]
+        if b in bank:
+            bank[b]+=1
+        elif b=="No":
+            continue
+        else:
+            bank["郵局"]+=1
+        total+=1
+
+
+    bank=sorted(bank.items(),key=lambda x:x[1],reverse=True)
+    a=[]
+    b=[]
+    for k,v in bank:
+        a.append(k)
+        b.append(v)
+
+    background=[]
+    for i in range(len(a)):
+        background.append(f"rgba({random.randint(0,255)}, {random.randint(0,255)}, {random.randint(0,255)}, 1)")
+    context = {
+        'bank': a,
+        "count":b,
+        'total':total,
+        "background":background,
+
+    }
+    return render(request, 'chart_use_atm.html', context=context)
+
+def atm_bank_chart(request):
+
+    bank=dict()
+    
+    a='''一銀
+        中信
+        元大
+        兆豐
+        台新
+        合庫
+        國世
+        土銀
+        彰銀
+        永豐
+        玉山
+        臺企
+        臺銀
+        華銀'''
+    for i in a.replace(" ","").split("\n"):
+        bank[i]=0
+    bank["郵局"]=0
+    
+    total=0
+    for obj in AtmMain.objects.all():
+        b=obj.atm_name[:2]
+        if b in bank:
+            bank[b]+=1
+        elif b=="No":
+            continue
+        else:
+            bank["郵局"]+=1
+        total+=1
+
+
+    bank=sorted(bank.items(),key=lambda x:x[1],reverse=True)
+    a=[]
+    b=[]
+    for k,v in bank:
+        a.append(k)
+        b.append(v)
+    background=[]
+    for i in range(len(a)):
+        background.append(f"rgba({random.randint(0,255)}, {random.randint(0,255)}, {random.randint(0,255)}, 1)")
+    context = {
+        'bank': a,
+        "count":b,
+        'total':total,
+        "background":background,
+
+    }
+
+    return render(request, 'chart_atm_bank.html', context=context)

@@ -17,7 +17,8 @@ urlpatterns = [
     path('chart/atm', views.chart, name='chart_atm'),
     path('chart/user', views.registration_trend, name='chart_user'),
     path('chart/transaction', views.transaction_chart, name='chart_transaction'),
-
+    path('chart/use_atm', views.use_atm_chart, name='chart_use_atm'),
+    path('chart/chart_atm_bank', views.atm_bank_chart, name='chart_atm_bank'),
 
     path("restart_map/", views.restart_map, name="restart"),
     path('register/', views.register, name='register'),

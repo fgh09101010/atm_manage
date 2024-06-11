@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>ATM數量: {{ total }}</h2>
+<div style="display: flex; justify-content: center; align-items: center; height: 500px;">
+    <canvas id="registrationChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('registrationChart').getContext('2d');
+
+        // 获取从视图传递的用户注册数量数据
+        var bankData = {{ bank|safe }};
+        var transactionData = {{ count }};
+        var back = {{ background|safe }};
+
+        var registrationChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: bankData, // 使用传递的银行名称作为标签
+                datasets: [{
+                    label: "數量", // 图例标签
+                    data: transactionData, // 使用传递的交易次数数据
+                    backgroundColor: back, // 背景颜色
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
