@@ -2,7 +2,7 @@
   pk: 1
   fields:
     password: pbkdf2_sha256$720000$zyUuH8d1LV5LsumREG5FIZ$TyjWivhnrAOinxL87qm7wOeXNvkQzrWTa0SrURzlSwQ=
-    last_login: 2024-06-10 08:37:42.128640+00:00
+    last_login: 2024-06-11 05:10:14.146920+00:00
     is_superuser: true
     username: admin
     first_name: ''
@@ -17,7 +17,7 @@
   pk: 3
   fields:
     password: pbkdf2_sha256$720000$RpO4LECTUokRMF9LZjCutD$H+L1I+YQfk1SQAChCpa1w2dm5wpaBCLyphbcRD+GYc4=
-    last_login: 2024-06-05 04:21:15.399040+00:00
+    last_login: 2024-06-11 04:39:21.403447+00:00
     is_superuser: false
     username: user001
     first_name: ''

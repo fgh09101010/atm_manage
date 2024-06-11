@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
   <head>
     {% block title %}
     <title>ATM</title>
@@ -19,7 +20,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-
+    <script>
+      function refreshMap(event) {
+          var link = document.getElementById('refresh-map-link');
+          link.innerHTML = '重新整理中...';
+      }
+    </script>
 
   </head>
   <body>
@@ -102,7 +108,7 @@
             {% endif %}
 
             {% if request.path == '/atm/map/' %}
-              <li><a class="dropdown-item" href="{% url 'restart' %}">重新整理地圖</a></li>
+            <li><a id="refresh-map-link" class="dropdown-item" href="{% url 'restart' %} " onclick="refreshMap(event)">重新整理地圖</a></li>
             {% endif %}
           </ul>
           

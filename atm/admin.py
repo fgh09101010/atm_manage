@@ -20,8 +20,9 @@ class CityAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display =("user", "balance","account_number","join_time")
+    list_filter = ("join_time",)
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ['customer', 'time', 'amount', 'type',  'destination_account','atm']
-    list_filter = ("type",)
+    list_filter = ("type","time")

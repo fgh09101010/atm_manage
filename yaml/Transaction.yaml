@@ -107,38 +107,38 @@
     type: withdraw
     destination_account: null
 - model: atm.transaction
-  pk: 45
+  pk: 51
   fields:
     customer: 8
-    time: 2024-06-07 07:05:42.375321+00:00
-    amount: '30.00'
-    atm: null
+    time: 2024-06-11 04:38:02.337788+00:00
+    amount: '1000.00'
+    atm: 1
     type: transfer
     destination_account: null
 - model: atm.transaction
-  pk: 46
+  pk: 52
   fields:
-    customer: 7
-    time: 2024-06-07 07:05:42.375321+00:00
-    amount: '30.00'
-    atm: 1
+    customer: 6
+    time: 2024-06-11 04:38:02.338772+00:00
+    amount: '1000.00'
+    atm: null
     type: transfer
     destination_account: 8
 - model: atm.transaction
-  pk: 47
-  fields:
-    customer: 8
-    time: 2024-06-07 07:05:48.192226+00:00
-    amount: '30.00'
-    atm: null
-    type: transfer
-    destination_account: null
-- model: atm.transaction
-  pk: 48
+  pk: 53
   fields:
     customer: 5
-    time: 2024-06-07 07:05:48.192226+00:00
-    amount: '30.00'
-    atm: 1
+    time: 2024-06-11 04:40:15.970241+00:00
+    amount: '1000.00'
+    atm: 14995
     type: transfer
-    destination_account: 8
+    destination_account: null
+- model: atm.transaction
+  pk: 54
+  fields:
+    customer: 8
+    time: 2024-06-11 04:40:15.972298+00:00
+    amount: '1000.00'
+    atm: null
+    type: transfer
+    destination_account: 5
