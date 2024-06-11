@@ -3,28 +3,28 @@
   fields:
     user: 3
     account_number: 000-002
-    balance: '11410.02'
+    balance: '10810.02'
     join_time: 2024-06-03 18:51:10+00:00
 - model: atm.customer
   pk: 6
   fields:
     user: 6
     account_number: 000-003
-    balance: '1000.00'
+    balance: '1200.00'
     join_time: 2024-06-03 18:51:18+00:00
 - model: atm.customer
   pk: 7
   fields:
     user: 7
     account_number: 000-004
-    balance: '30.00'
+    balance: '830.00'
     join_time: 2024-06-04 02:15:55+00:00
 - model: atm.customer
   pk: 8
   fields:
     user: 1
     account_number: 000-001
-    balance: '9999994939.00'
+    balance: '9999996339.00'
     join_time: 2024-06-03 02:16:05+00:00
 - model: atm.customer
   pk: 9
