@@ -52,16 +52,16 @@ class DepositForm(forms.Form):
 
 class WithdrawForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='取款金額')
-    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', disabled=True)
+    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', required=False,disabled=True)
 
 class TransferForm(forms.Form):
     destination_account_number = forms.CharField(label='目標帳戶', initial='000-001')
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='轉帳金額')
-    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', disabled=True)
+    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', required=False,disabled=True)
 
 class PaymentForm(forms.Form):
     amount = forms.DecimalField(max_digits=15, decimal_places=2, label='支付金額')
-    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', disabled=True)
+    balance = forms.DecimalField(max_digits=15, decimal_places=2, label='您的餘額', required=False,disabled=True)
 
 class FilterForm(forms.Form):
     YES_NO_CHOICES = (

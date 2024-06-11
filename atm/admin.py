@@ -8,7 +8,7 @@ class AtmAddressAdmin(admin.ModelAdmin):
 @admin.register(AtmMain)
 class AtmMainAdmin(admin.ModelAdmin):
     list_display = ("address", "city_town", "atm_code", "atm_name", "type", "category", "atm_install", "phone", "service_type", "use_wheel", "voice")
-    list_filter =("use_wheel", "voice")
+    list_filter =("city_town__city","use_wheel", "voice")
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):

@@ -12,7 +12,7 @@ import os
 from .forms import RegisterForm,LoginForm,DepositForm,WithdrawForm,TransferForm,PaymentForm,FilterForm,CaptchForm
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render, redirect
-from .forms import LoginForm
+
 from django.contrib.auth.decorators import login_required
 from django.db import models
 import datetime
@@ -133,7 +133,7 @@ class CityDetailView(generic.DetailView):
 
         return context
     
-@staff_member_required
+
 def restart_map(request):
 
 
@@ -200,7 +200,9 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user  != "":
                 login(request, user)
-                next_url = request.POST.get('next', '/')
+                next_url = request.POST.get('next', '')
+                if next_url=="":
+                    next_url="index"
                 return redirect(next_url)
             else:
                 form.add_error(None, '用户名或密码不正确')
@@ -803,10 +805,10 @@ def use_transfer(request,pk):
                 destination_account.save()
 
                 # 创建转账交易记录
-                Transaction.objects.create(customer=source_account, amount=amount, type='transfer')
+                Transaction.objects.create(customer=source_account, amount=amount, type='transfer',atm=atm_instance)
 
                 # 创建另一条转账交易记录，以记录目标账户的收入
-                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account,atm=atm_instance)
+                Transaction.objects.create(customer=destination_account, amount=amount, type='transfer', destination_account=source_account)
 
                 return redirect(reverse('atm_detail_use', kwargs={'pk': pk}))
             else:
@@ -818,6 +820,7 @@ def use_transfer(request,pk):
 
 @login_required
 def use_payment(request,pk):
+    
     atm_instance = get_object_or_404(AtmMain, pk=pk)
     if request.method == 'POST':
         form = PaymentForm(request.POST)
